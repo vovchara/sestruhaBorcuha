@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C65BE550-AA2A-405A-8C22-3F8989AF7EF0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scene</RootNamespace>
+    <AssemblyName>Scene</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Profile|x86' ">
+    <OutputPath>bin\x86\Profile\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Profile|x64'">
+    <OutputPath>bin\x64\Profile\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Monosyne, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\Windows\obj\x86\Debug\Monosyne.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Src\Controller\RootController.cs" />
+    <Compile Include="Src\TestGame.cs">
+      <Link>Src\TestGame.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\View\WelcomePopup.cs" />
+    <Compile Include="Src\Windows\Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Assets\int.fnt">
+      <Link>Assets\int.fnt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Assets\int_0.pvr">
+      <Link>Assets\int_0.pvr</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Assets\packagev3.bip">
+      <Link>Assets\packagev3.bip</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Components\Monosyne.Components\Monosyne.Components.csproj">
+      <Project>{49e38d3b-8a3a-4813-9117-96b05064dc17}</Project>
+      <Name>Monosyne.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Content\Monosyne.Content\Monosyne.Content.csproj">
+      <Project>{78165fe8-ef10-436f-8001-726fa229d737}</Project>
+      <Name>Monosyne.Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Core\Monosyne.Core\Monosyne.Core.csproj">
+      <Project>{ca3aed67-e8a6-4c21-a7ce-f61f1a00b605}</Project>
+      <Name>Monosyne.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.Common\Monosyne.Scene.Common\Monosyne.Scene.Common.csproj">
+      <Project>{7f5d353c-09d1-41e9-a810-4d8bd6f97f75}</Project>
+      <Name>Monosyne.Scene.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.V2\Monosyne.Scene.V2\Monosyne.Scene.V2.csproj">
+      <Project>{bb0a19bd-4104-4392-96dd-89c69a918929}</Project>
+      <Name>Monosyne.Scene.V2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.V3\Monosyne.Scene.V3\Monosyne.Scene.V3.csproj">
+      <Project>{68f3c38b-6380-4874-8116-02c31b8a0b0b}</Project>
+      <Name>Monosyne.Scene.V3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Tools\Monosyne.Tools\Monosyne.Tools.csproj">
+      <Project>{a75da546-aac3-458d-857d-9ffd2fae0dd0}</Project>
+      <Name>Monosyne.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Utils\Monosyne.Utils\Monosyne.Utils.csproj">
+      <Project>{c0b6855d-dfd2-4767-a567-b68235743926}</Project>
+      <Name>Monosyne.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monosyne\Projects\Windows\Monosyne.Windows.csproj">
+      <Project>{b6c12167-a2ba-40b9-cbec-253eb74420c5}</Project>
+      <Name>Monosyne.Windows</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

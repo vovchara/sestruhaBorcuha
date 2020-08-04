@@ -4,3 +4,4 @@ bin/
 *.exe
 *.suo
 Monosyne/
+.idea/
