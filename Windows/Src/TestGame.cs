@@ -16,7 +16,7 @@ namespace Scene
 {
 	public class TestGame: GameV3
 	{
-	    public readonly RectangleF CoordinateSystem = new RectangleF(0, 0, 960, 640);
+	    public readonly RectangleF CoordinateSystem = new RectangleF(0, 0, 1152, 768);
 
 	    private readonly RenderStatesNode _rootNode;
         private readonly GesturesTranslator _touchTranslator;
@@ -84,7 +84,7 @@ namespace Scene
         {
 	        await SwitchContext.To(GameThreadEnvironment);
 	        
-	        AddFpsPanel();
+	        //AddFpsPanel();
 	        
             _rootNode.Initialize();
             AddComponent(_rootNode);
