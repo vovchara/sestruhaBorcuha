@@ -1,38 +1,74 @@
+using System;
 using Monosyne;
 using Monosyne.Scene.V3;
-using Scene.View;
+using Scene.Storage;
 
 namespace Scene.Controller
 {
-    public class RootController
+    public class RootController : IDisposable
     {
-        private readonly Game _game;
-        private readonly RenderStatesNode _rootScene;
-
-        private WelcomePopup _welcomePopup;
+        private WelcomeController _welcomeController;
+        private LobbyController _lobbyController;
 
         public RootController(Game game, RenderStatesNode rootSceneNode)
         {
-            _game = game;
-            _rootScene = rootSceneNode;
+            InitializeRootStorage(game, rootSceneNode);
+        }
+        
+        private void InitializeRootStorage(Game game, RenderStatesNode rootSceneNode)
+        {
+            var rootStorage = RootStorage.getInstance();
+            rootStorage.Game = game;
+            rootStorage.RootScene = rootSceneNode;
         }
 
         public void Start()
         {
-            _welcomePopup = new WelcomePopup(_game);
-            var view = _welcomePopup.View;
-
-            _rootScene.AddChild(view);
+            CreateAndRunWelcome();
         }
 
         public void Dispose()
         {
-            _welcomePopup?.Dispose();
-// the same           
-//            if (_welcomePopup != null)
-//            {
-//                _welcomePopup.Dispose();
-//            }
+            DestroyWelcomeIfNeeded();
+            DestroyLobbyIfNeeded();
+        }
+        
+        private void CreateAndRunWelcome()
+        {
+            _welcomeController = new WelcomeController();
+            _welcomeController.StartNewGame += StartNewGameHandler;
+            _welcomeController.Start();
+        }
+        
+        private void StartNewGameHandler()
+        {
+            DestroyWelcomeIfNeeded();
+            CreateAndRunLobby();
+        }
+
+        private void DestroyWelcomeIfNeeded()
+        {
+            if (_welcomeController != null)
+            {
+                _welcomeController.StartNewGame -= StartNewGameHandler;
+                _welcomeController?.Dispose();
+                _welcomeController = null;
+            }
+        }
+        
+        private void CreateAndRunLobby()
+        {
+            _lobbyController = new LobbyController();
+            _lobbyController.Start();
+        }
+
+        private void DestroyLobbyIfNeeded()
+        {
+            if (_lobbyController != null)
+            {
+                _lobbyController.Dispose();
+                _lobbyController = null;
+            }
         }
     }
 }

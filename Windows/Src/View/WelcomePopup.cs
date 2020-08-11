@@ -13,6 +13,8 @@ namespace Scene.View
 {
     public class WelcomePopup : IDisposable
     {
+        public event Action<string> StartGameClicked = delegate { };
+
         private readonly PackageContentManager _packageContentManager;
         public AbstractNode View { get; }
 
@@ -36,28 +38,26 @@ namespace Scene.View
             _backButton.Hidden = true;
             _tittle.TextLineRenderer.Text = "Borcuha";
             _centralButton.Clicked += OnCentralClicked;
-
-            //var centralButton = View.FindById<ButtonNode>("WheelBtn");
-            //centralButton.Clicked += () => Node_Clicked(centralButton.StateMachine);
         }
 
         private void OnCentralClicked()
         {
-            _centralButton.Hidden = true;
-            _tittle.TextLineRenderer.Text = $"Tebe zvaty {_inputNameTxt.TextRenderer.Text}";
-        }
+            var inputedText = _inputNameTxt.TextRenderer.Text;
+            if (string.IsNullOrEmpty(inputedText))
+            {
+                return;
+            }
 
-//        private async void Node_Clicked(BaseState state)
-//        {
-//            state.SendEvent("btn_anim");
-//            await Task.Delay(5000);
-//            state.SendEvent("wheel_stop_in_sector13");
-//            await Task.Delay(3000);
-//            state.SendEvent("up");
-//        }
+            StartGameClicked(inputedText);
+        }
         
         public void Dispose()
         {
+            if ((View.Parent as ContainerNode) != null)
+            {
+                ((ContainerNode) View.Parent).RemoveChild(View);
+            }
+            View.Dispose();
             _packageContentManager.Dispose();
         }
     }
