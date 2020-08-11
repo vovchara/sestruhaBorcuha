@@ -109,6 +109,10 @@
       <Link>Assets\packagev3.bip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\Assets\welcome.bip">
+      <Link>Assets\welcome.bip</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
