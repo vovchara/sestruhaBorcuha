@@ -88,7 +88,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Controller\LobbyController.cs" />
     <Compile Include="Src\Controller\RootController.cs" />
+    <Compile Include="Src\Controller\WelcomeController.cs" />
+    <Compile Include="Src\Model\RootStorage.cs" />
+    <Compile Include="Src\Model\UserStorage.cs" />
     <Compile Include="Src\TestGame.cs">
       <Link>Src\TestGame.cs</Link>
     </Compile>
@@ -103,10 +107,6 @@
     </None>
     <None Include="..\Assets\int_0.pvr">
       <Link>Assets\int_0.pvr</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Assets\packagev3.bip">
-      <Link>Assets\packagev3.bip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\Assets\welcome.bip">

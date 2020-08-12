@@ -13,6 +13,8 @@ namespace Scene.View
 {
     public class WelcomePopup : IDisposable
     {
+        public event Action<string> UserClickedStartGame = delegate { };
+
         private readonly PackageContentManager _packageContentManager;
         public AbstractNode View { get; }
 
@@ -26,35 +28,23 @@ namespace Scene.View
             _packageContentManager = new PackageContentManager(game, game.Platform.FileSystem.AssetStorage.CreateBinaryPackage("welcome.bip", true));
             View = _packageContentManager.Load<AbstractNode>("sceneWelcomePopup4x3.object");
 
-            View.PostToStateMachine(new ParamEvent<string>("showPopup"));
-
             _tittle = View.FindById<BitmapTextNode>("TitleTxt");
             _centralButton = View.FindById<ButtonNode>("NewGameBtn");
             _inputNameTxt = View.FindById<MultilineBitmapTextNode>("inputFieldTxt");
             _backButton = View.FindById<ButtonNode>("backBtn");
+            
+            View.PostToStateMachine(new ParamEvent<string>("showPopup"));
 
             _backButton.Hidden = true;
             _tittle.TextLineRenderer.Text = "Borcuha";
             _centralButton.Clicked += OnCentralClicked;
-
-            //var centralButton = View.FindById<ButtonNode>("WheelBtn");
-            //centralButton.Clicked += () => Node_Clicked(centralButton.StateMachine);
         }
 
         private void OnCentralClicked()
         {
-            _centralButton.Hidden = true;
-            _tittle.TextLineRenderer.Text = $"Tebe zvaty {_inputNameTxt.TextRenderer.Text}";
+            var userName = _inputNameTxt.TextRenderer.Text;
+            UserClickedStartGame(userName);
         }
-
-//        private async void Node_Clicked(BaseState state)
-//        {
-//            state.SendEvent("btn_anim");
-//            await Task.Delay(5000);
-//            state.SendEvent("wheel_stop_in_sector13");
-//            await Task.Delay(3000);
-//            state.SendEvent("up");
-//        }
         
         public void Dispose()
         {
