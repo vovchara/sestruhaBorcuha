@@ -1,33 +1,49 @@
 using Monosyne;
 using Monosyne.Scene.V3;
-using Scene.View;
+using Scene.Model;
 
 namespace Scene.Controller
 {
     public class RootController
     {
-        private readonly Game _game;
-        private readonly RenderStatesNode _root;
+        private WelcomeController _welcomeController;
+        private LobbyController _lobbyController;
 
-        private WelcomePopup _welcomePopup;
-
-        public RootController(Game game, RenderStatesNode rootNode)
+        public RootController(Game game, RenderStatesNode rootSceneNode)
         {
-            _game = game;
-            _root = rootNode;
+            var rootStorage = RootStorage.getInstance();
+            rootStorage.Game = game;
+            rootStorage.RootScene = rootSceneNode;
         }
 
         public void Start()
         {
-            _welcomePopup = new WelcomePopup(_game);
-            var view = _welcomePopup.View;
+            _welcomeController = new WelcomeController();
+            _welcomeController.StartNewGame += StartNewGameHandler;
+            _welcomeController.Start();
+        }
 
-            _root.AddChild(view);
+        private void StartNewGameHandler()
+        {
+            DisposeWelcomeIfNeeded();
+            
+            _lobbyController = new LobbyController();
+            _lobbyController.Start();
         }
 
         public void Dispose()
         {
-            _welcomePopup?.Dispose();
+            DisposeWelcomeIfNeeded();
+        }
+
+        private void DisposeWelcomeIfNeeded()
+        {
+            if (_welcomeController != null)
+            {
+                _welcomeController.StartNewGame -= StartNewGameHandler;
+                _welcomeController.Dispose();
+                _welcomeController = null;
+            }
         }
     }
 }

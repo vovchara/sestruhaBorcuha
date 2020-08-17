@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Monosyne;
 using Monosyne.Content;
+using Monosyne.Events;
 using Monosyne.Fsm;
 using Monosyne.Input;
 using Monosyne.Scene.V3;
@@ -12,26 +13,37 @@ namespace Scene.View
 {
     public class WelcomePopup : IDisposable
     {
+        public event Action<string> UserClickedStartGame = delegate { };
+
         private readonly PackageContentManager _packageContentManager;
         public AbstractNode View { get; }
 
+        private readonly BitmapTextNode _tittle;
+        private readonly ButtonNode _centralButton;
+        private readonly MultilineBitmapTextNode _inputNameTxt;
+        private readonly ButtonNode _backButton;
+
         public WelcomePopup(Game game)
         {
-            _packageContentManager = new PackageContentManager(game, game.Platform.FileSystem.AssetStorage.CreateBinaryPackage("packagev3.bip", true));
-            View = _packageContentManager.Load<AbstractNode>("scene3x2.object");
+            _packageContentManager = new PackageContentManager(game, game.Platform.FileSystem.AssetStorage.CreateBinaryPackage("welcome.bip", true));
+            View = _packageContentManager.Load<AbstractNode>("sceneWelcomePopup4x3.object");
+
+            _tittle = View.FindById<BitmapTextNode>("TitleTxt");
+            _centralButton = View.FindById<ButtonNode>("NewGameBtn");
+            _inputNameTxt = View.FindById<MultilineBitmapTextNode>("inputFieldTxt");
+            _backButton = View.FindById<ButtonNode>("backBtn");
             
-            var centralButton = View.FindById<ButtonNode>("WheelBtn");
-            centralButton.HoverPointerType = PointerType.Hand;
-            centralButton.Clicked += () => Node_Clicked(centralButton.StateMachine);
+            View.PostToStateMachine(new ParamEvent<string>("showPopup"));
+
+            _backButton.Hidden = true;
+            _tittle.TextLineRenderer.Text = "Borcuha";
+            _centralButton.Clicked += OnCentralClicked;
         }
-        
-        private async void Node_Clicked(BaseState state)
+
+        private void OnCentralClicked()
         {
-            state.SendEvent("btn_anim");
-            await Task.Delay(5000);
-            state.SendEvent("wheel_stop_in_sector13");
-            await Task.Delay(3000);
-            state.SendEvent("up");
+            var userName = _inputNameTxt.TextRenderer.Text;
+            UserClickedStartGame(userName);
         }
         
         public void Dispose()
