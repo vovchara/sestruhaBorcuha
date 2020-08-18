@@ -75,7 +75,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-    <ItemGroup Condition="'$(Platform)' == 'x86'">
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
     <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\bink2.dll">
       <Link>bink2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -186,6 +186,16 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Desktop" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="SharpDX.XAudio2" Version="4.2.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
