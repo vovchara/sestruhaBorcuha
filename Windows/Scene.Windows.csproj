@@ -75,9 +75,79 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+    <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\bink2.dll">
+      <Link>bink2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\ezXml.dll">
+      <Link>ezXml.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\freetype.dll">
+      <Link>freetype.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\libsvgren.dll">
+      <Link>libsvgren.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\libwebpdecoder.dll">
+      <Link>libwebpdecoder.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\oggvorbis.dll">
+      <Link>oggvorbis.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\libmpg123.dll">
+      <Link>libmpg123.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\OpenAL32.dll">
+      <Link>OpenAL32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\tremor.dll">
+      <Link>tremor.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\wrap_oal.dll">
+      <Link>wrap_oal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Monosyne\ThirdParty\Libs\Windows\x86\zlib.dll">
+      <Link>zlib.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Monosyne, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Monosyne\Projects\Windows\obj\x86\Debug\Monosyne.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Components, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Components\Monosyne.Components\bin\Debug\netstandard1.3\Monosyne.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Content, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Content\Monosyne.Content\bin\Debug\netstandard1.3\Monosyne.Content.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Core, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Core\Monosyne.Core\bin\Debug\netstandard1.3\Monosyne.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Scene.Common, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Scene.Common\Monosyne.Scene.Common\bin\Debug\netstandard1.3\Monosyne.Scene.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Scene.V2, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Scene.V2\Monosyne.Scene.V2\bin\Debug\netstandard1.3\Monosyne.Scene.V2.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Scene.V3, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Scene.V3\Monosyne.Scene.V3\bin\Debug\netstandard1.3\Monosyne.Scene.V3.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Tools, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Tools\Monosyne.Tools\bin\Debug\netstandard1.3\Monosyne.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Monosyne.Utils, Version=3.7.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Monosyne\Projects\NetStandart\Monosyne.Utils\Monosyne.Utils\bin\Debug\netstandard1.3\Monosyne.Utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -116,45 +186,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Components\Monosyne.Components\Monosyne.Components.csproj">
-      <Project>{49e38d3b-8a3a-4813-9117-96b05064dc17}</Project>
-      <Name>Monosyne.Components</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Content\Monosyne.Content\Monosyne.Content.csproj">
-      <Project>{78165fe8-ef10-436f-8001-726fa229d737}</Project>
-      <Name>Monosyne.Content</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Core\Monosyne.Core\Monosyne.Core.csproj">
-      <Project>{ca3aed67-e8a6-4c21-a7ce-f61f1a00b605}</Project>
-      <Name>Monosyne.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.Common\Monosyne.Scene.Common\Monosyne.Scene.Common.csproj">
-      <Project>{7f5d353c-09d1-41e9-a810-4d8bd6f97f75}</Project>
-      <Name>Monosyne.Scene.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.V2\Monosyne.Scene.V2\Monosyne.Scene.V2.csproj">
-      <Project>{bb0a19bd-4104-4392-96dd-89c69a918929}</Project>
-      <Name>Monosyne.Scene.V2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Scene.V3\Monosyne.Scene.V3\Monosyne.Scene.V3.csproj">
-      <Project>{68f3c38b-6380-4874-8116-02c31b8a0b0b}</Project>
-      <Name>Monosyne.Scene.V3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Tools\Monosyne.Tools\Monosyne.Tools.csproj">
-      <Project>{a75da546-aac3-458d-857d-9ffd2fae0dd0}</Project>
-      <Name>Monosyne.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\NetStandart\Monosyne.Utils\Monosyne.Utils\Monosyne.Utils.csproj">
-      <Project>{c0b6855d-dfd2-4767-a567-b68235743926}</Project>
-      <Name>Monosyne.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Monosyne\Projects\Windows\Monosyne.Windows.csproj">
-      <Project>{b6c12167-a2ba-40b9-cbec-253eb74420c5}</Project>
-      <Name>Monosyne.Windows</Name>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
