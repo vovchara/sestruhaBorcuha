@@ -29,10 +29,10 @@ namespace Scene.Controller
             var view = _lobbyPopup.View;
             _rootScene.AddChild(view);
 
-            _lobbyPopup.backBtnClicked += _lobbyPopup_backBtnClicked;
+            _lobbyPopup.backBtnClicked += OnUserClickedBackBtn;
         }
 
-        private void _lobbyPopup_backBtnClicked()
+        private void OnUserClickedBackBtn()
         {
             OpenWelcomePopup();
         }
@@ -41,7 +41,7 @@ namespace Scene.Controller
         {
             if (_lobbyPopup != null)
             {
-                _lobbyPopup.backBtnClicked -= _lobbyPopup_backBtnClicked;
+                _lobbyPopup.backBtnClicked -= OnUserClickedBackBtn;
                 _lobbyPopup.Dispose();
             }
         }

@@ -55,7 +55,6 @@ namespace Scene.Src.View
 
             _nameTxt.TextLineRenderer.Text = userData;
             _backBtn.Clicked += backBtn_isClicked;
-
         }
 
         private void backBtn_isClicked()

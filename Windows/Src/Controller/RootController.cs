@@ -29,12 +29,12 @@ namespace Scene.Controller
             
             _lobbyController = new LobbyController();
             _lobbyController.Start();
-            _lobbyController.OpenWelcomePopup += _lobbyController_OpenWelcomePopup;
+            _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
         }
 
-        private void _lobbyController_OpenWelcomePopup()
+        private void OpenWelcomePopupHandler()
         {
-            _lobbyController.Dispose();
+            DisposeLobbyIfNeeded();
             Start();
         }
 
@@ -48,8 +48,9 @@ namespace Scene.Controller
         {
             if (_lobbyController != null)
             {
-                _lobbyController.OpenWelcomePopup -= _lobbyController_OpenWelcomePopup;
+                _lobbyController.OpenWelcomePopup -= OpenWelcomePopupHandler;
                 _lobbyController.Dispose();
+                _lobbyController = null;
             }
         }
 
