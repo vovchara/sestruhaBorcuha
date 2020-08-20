@@ -29,11 +29,29 @@ namespace Scene.Controller
             
             _lobbyController = new LobbyController();
             _lobbyController.Start();
+            _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
+        }
+
+        private void OpenWelcomePopupHandler()
+        {
+            DisposeLobbyIfNeeded();
+            Start();
         }
 
         public void Dispose()
         {
             DisposeWelcomeIfNeeded();
+            DisposeLobbyIfNeeded();
+        }
+
+        private void DisposeLobbyIfNeeded()
+        {
+            if (_lobbyController != null)
+            {
+                _lobbyController.OpenWelcomePopup -= OpenWelcomePopupHandler;
+                _lobbyController.Dispose();
+                _lobbyController = null;
+            }
         }
 
         private void DisposeWelcomeIfNeeded()
