@@ -41,8 +41,16 @@ namespace Scene.Controller
         public void Dispose()
         {
             DisposeWelcomeIfNeeded();
-            _lobbyController.OpenWelcomePopup -= _lobbyController_OpenWelcomePopup;
+            DisposeLobbyIfNeeded();
+        }
 
+        private void DisposeLobbyIfNeeded()
+        {
+            if (_lobbyController != null)
+            {
+                _lobbyController.OpenWelcomePopup -= _lobbyController_OpenWelcomePopup;
+                _lobbyController.Dispose();
+            }
         }
 
         private void DisposeWelcomeIfNeeded()
