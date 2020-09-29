@@ -2,25 +2,16 @@ using System;
 using Monosyne;
 using Monosyne.Scene.V3;
 using Scene.Model;
+using Scene.Src.Controller;
 using Scene.View;
 
 namespace Scene.Controller
 {
-    public class WelcomeController
+    public class WelcomeController : ControllerBase
     {
         public event Action StartNewGame = delegate { };
 
-        private readonly Game _game;
-        private readonly RenderStatesNode _rootScene;
-
         private WelcomePopup _welcomePopup;
-
-        public WelcomeController()
-        {
-            var rootStorage = RootStorage.getInstance();
-            _game = rootStorage.Game;
-            _rootScene = rootStorage.RootScene;
-        }
 
         public void Start()
         {
