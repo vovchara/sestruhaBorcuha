@@ -1,24 +1,13 @@
 ﻿using Monosyne;
-using Monosyne.Content;
-using Monosyne.Events;
 using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
-using Monosyne.Utils;
-using Scene.Controller;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.View
 {
-    public class LobbyPopup : IDisposable
+    public class LobbyPopup : PopupBase
     {
         public event Action backBtnClicked = delegate { };
-
-        private readonly PackageContentManager _packageContentManager; 
-        public AbstractNode View { get; }
 
         private readonly WidgetNode _soundBtn;
         private readonly BitmapTextNode _nameTxt;
@@ -33,10 +22,8 @@ namespace Scene.Src.View
         private readonly ButtonNode _lvlSevenBtn;
         private readonly ButtonNode _lvlEightBtn;
 
-         public LobbyPopup(Game game, string userData)
+         public LobbyPopup(Game game, string userData) : base(game, "lobby.bip", "sceneLobbyPopup.object")
          {
-            _packageContentManager = new PackageContentManager(game, game.Platform.FileSystem.AssetStorage.CreateBinaryPackage("lobby.bip", true));
-            View = _packageContentManager.Load<AbstractNode>("sceneLobbyPopup.object");
 
             _soundBtn = View.FindById<WidgetNode>("SoundContainer");
             _nameTxt = View.FindById<BitmapTextNode>("NameTxt");
@@ -51,20 +38,28 @@ namespace Scene.Src.View
             _lvlSevenBtn = View.FindById<ButtonNode>("LevelSevenBtn");
             _lvlEightBtn = View.FindById<ButtonNode>("LevelEightBtn");
 
-            View.PostToStateMachine(new ParamEvent<string>("showLobbyPopup"));
+            ShowPopup("showLobbyPopup");
 
             _nameTxt.TextLineRenderer.Text = userData;
             _backBtn.Clicked += backBtn_isClicked;
         }
 
+        //incorrect
+        //protected override void ShowPopup(string showState)
+        //{
+        //    View.PostToStateMachine(null);
+        //}
+
+        //correct
+        //protected override void ShowPopup(string showState)
+        //{
+         //   base.ShowPopup(showState);
+         //   View.PostToStateMachine(null);
+        //}
+
         private void backBtn_isClicked()
         {
             backBtnClicked();
-        }
-
-        public void Dispose()
-        {
-            _packageContentManager.Dispose();
         }
     }
 }
