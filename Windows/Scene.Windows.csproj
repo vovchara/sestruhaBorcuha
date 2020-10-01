@@ -163,6 +163,8 @@
     <Compile Include="Src\Controller\LobbyController.cs" />
     <Compile Include="Src\Controller\RootController.cs" />
     <Compile Include="Src\Controller\WelcomeController.cs" />
+    <Compile Include="Src\Model\LevelConfigModel.cs" />
+    <Compile Include="Src\Model\LevelConfigStorage.cs" />
     <Compile Include="Src\Model\RootStorage.cs" />
     <Compile Include="Src\Model\UserStorage.cs" />
     <Compile Include="Src\TestGame.cs">
@@ -188,7 +190,7 @@
       <Link>Assets\welcome.bip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-	<None Include="..\Assets\armwrestling.bip">
+    <None Include="..\Assets\armwrestling.bip">
       <Link>Assets\armwrestling.bip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
