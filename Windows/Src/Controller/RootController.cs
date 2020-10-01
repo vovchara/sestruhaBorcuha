@@ -1,6 +1,7 @@
 using Monosyne;
 using Monosyne.Scene.V3;
 using Scene.Model;
+using Scene.Src.Controller;
 
 namespace Scene.Controller
 {
@@ -8,6 +9,7 @@ namespace Scene.Controller
     {
         private WelcomeController _welcomeController;
         private LobbyController _lobbyController;
+        private LevelController _levelController;
 
         public RootController(Game game, RenderStatesNode rootSceneNode)
         {
@@ -30,6 +32,13 @@ namespace Scene.Controller
             _lobbyController = new LobbyController();
             _lobbyController.Start();
             _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
+            _lobbyController.OpenLevelPopup += StartLvlOne;
+        }
+
+        private void StartLvlOne()
+        {
+            _levelController = new LevelController();
+            _levelController.Start();
         }
 
         private void OpenWelcomePopupHandler()

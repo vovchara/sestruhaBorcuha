@@ -10,6 +10,7 @@ namespace Scene.Controller
     public class LobbyController: ControllerBase
     {
         public event Action OpenWelcomePopup = delegate { };
+        public event Action OpenLevelPopup = delegate { };
 
         private LobbyPopup _lobbyPopup;
         private string _userData;
@@ -25,6 +26,12 @@ namespace Scene.Controller
             _rootScene.AddChild(view);
 
             _lobbyPopup.backBtnClicked += OnUserClickedBackBtn;
+            _lobbyPopup.lvlOneBtnClicked += OnUserClicked_lvlOneBtn;
+        }
+
+        private void OnUserClicked_lvlOneBtn()
+        {
+            OpenLevelPopup();
         }
 
         private void OnUserClickedBackBtn()
