@@ -20,12 +20,14 @@ namespace Scene.Src.View
         public event Action TimerEnd = delegate { };
 
         private readonly BitmapTextNode _timerTxt;
+        private readonly BitmapTextNode _titletxt;
         private readonly ButtonNode _backBtn;
         private readonly ControlNode _buttonOne;
         private readonly ControlNode _buttonTwo;
 
         private Timer _lvlTimer;
         private int _currentTimerSec; //30 //29 .. //1 //0
+        private string _lvlId;
 
         public LevelPopup(Game game, LevelConfigModel config) : base(game, "armwrestling.bip", "sceneArmGame.object")
         {
@@ -33,10 +35,22 @@ namespace Scene.Src.View
             _backBtn = View.FindById<ButtonNode>("backBtn");
             _buttonOne = View.FindById<ControlNode>("button_0");
             _buttonTwo = View.FindById<ControlNode>("button_1");
+            _titletxt = View.FindById<BitmapTextNode>("titleTxt");
+
 
             ShowPopup("showArmGame");
 
             StartTimer(config.LevelTimeSec);
+            _lvlId = config.LevelId.ToString();
+            _titletxt.TextLineRenderer.Text = $"Level {_lvlId}";
+            _backBtn.Clicked += _backBtn_IsClicked;
+
+        }
+
+        private void _backBtn_IsClicked()
+        {
+            _backBtn.Clicked -= _backBtn_IsClicked;
+            BackClicked();
         }
 
         private void StartTimer(int sec)

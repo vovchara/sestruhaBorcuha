@@ -10,7 +10,7 @@ namespace Scene.Controller
     public class LobbyController: ControllerBase
     {
         public event Action OpenWelcomePopup = delegate { };
-        public event Action OpenLevelPopup = delegate { };
+        public event Action<int> OpenLevelPopup = delegate { };
 
         private LobbyPopup _lobbyPopup;
         private string _userData;
@@ -26,12 +26,13 @@ namespace Scene.Controller
             _rootScene.AddChild(view);
 
             _lobbyPopup.backBtnClicked += OnUserClickedBackBtn;
-            _lobbyPopup.lvlOneBtnClicked += OnUserClicked_lvlOneBtn;
+            _lobbyPopup.lvlBtnIsClicked += OnUserClicked_lvlBtn;
         }
 
-        private void OnUserClicked_lvlOneBtn()
+        private void OnUserClicked_lvlBtn(int levelNumber)
         {
-            OpenLevelPopup();
+            OpenLevelPopup(levelNumber);
+            Dispose();
         }
 
         private void OnUserClickedBackBtn()
@@ -44,6 +45,7 @@ namespace Scene.Controller
             if (_lobbyPopup != null)
             {
                 _lobbyPopup.backBtnClicked -= OnUserClickedBackBtn;
+                _lobbyPopup.lvlBtnIsClicked -= OnUserClicked_lvlBtn;
                 _lobbyPopup.Dispose();
             }
         }

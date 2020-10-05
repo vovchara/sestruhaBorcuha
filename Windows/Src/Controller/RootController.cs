@@ -2,6 +2,8 @@ using Monosyne;
 using Monosyne.Scene.V3;
 using Scene.Model;
 using Scene.Src.Controller;
+using Scene.Src.View;
+using System;
 
 namespace Scene.Controller
 {
@@ -32,13 +34,20 @@ namespace Scene.Controller
             _lobbyController = new LobbyController();
             _lobbyController.Start();
             _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
-            _lobbyController.OpenLevelPopup += StartLvlOne;
+            _lobbyController.OpenLevelPopup += StartLvl;
         }
 
-        private void StartLvlOne()
+        private void StartLvl(int levelNumber)
         {
-            _levelController = new LevelController();
+            _levelController = new LevelController(levelNumber);
             _levelController.Start();
+            _levelController.OpenLobbyScreen += OpenLobbyScreenHandler;
+        }
+
+        private void OpenLobbyScreenHandler()
+        {
+            DisposeLevelIfNeded();
+            StartNewGameHandler();
         }
 
         private void OpenWelcomePopupHandler()
@@ -51,8 +60,18 @@ namespace Scene.Controller
         {
             DisposeWelcomeIfNeeded();
             DisposeLobbyIfNeeded();
+            DisposeLevelIfNeded();
         }
 
+        private void DisposeLevelIfNeded()
+        {
+            if (_levelController != null)
+            {
+                _levelController.OpenLobbyScreen -= OpenLobbyScreenHandler;
+                _levelController.Dispose();
+                _levelController = null;
+            }
+        }
         private void DisposeLobbyIfNeeded()
         {
             if (_lobbyController != null)

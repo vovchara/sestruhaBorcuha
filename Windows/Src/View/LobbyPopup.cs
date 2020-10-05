@@ -8,7 +8,7 @@ namespace Scene.Src.View
     public class LobbyPopup : PopupBase
     {
         public event Action backBtnClicked = delegate { };
-        public event Action lvlOneBtnClicked = delegate { };
+        public event Action<int> lvlBtnIsClicked = delegate { };
 
         private readonly WidgetNode _soundBtn;
         private readonly BitmapTextNode _nameTxt;
@@ -43,13 +43,12 @@ namespace Scene.Src.View
 
             _nameTxt.TextLineRenderer.Text = userData;
             _backBtn.Clicked += backBtn_isClicked;
-            _lvlOneBtn.Clicked += lvlOneBtn_isClicked;
+            _lvlOneBtn.Clicked += () => lvlBtnIsClicked(1);
+            _lvlTwoBtn.Clicked += () => lvlBtnIsClicked(2);
         }
 
-        private void lvlOneBtn_isClicked()
-        {
-            lvlOneBtnClicked();
-        }
+
+        //private void lvlBtn_isClicked() => lvlBtnIsClicked(1);
 
         //incorrect
         //protected override void ShowPopup(string showState)

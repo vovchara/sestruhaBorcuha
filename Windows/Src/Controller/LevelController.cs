@@ -11,8 +11,14 @@ namespace Scene.Src.Controller
 {
    public class LevelController : ControllerBase
     {
-        private readonly int _levelToOpen = 1; //todo
+        public event Action OpenLobbyScreen = delegate { };
+        private readonly int _levelToOpen;
         private LevelPopup _levelPopup;
+
+        public LevelController(int levelNumber)
+        {
+            _levelToOpen = levelNumber;
+        }
 
         public void Start()
         {
@@ -49,6 +55,7 @@ namespace Scene.Src.Controller
 
         private void OnBackClicked()
         {
+            OpenLobbyScreen();
         }
 
         public void Dispose()
