@@ -25,7 +25,13 @@ namespace Scene.Src.View
 
         protected virtual void ShowPopup(string showState)
         {
-            View.PostToStateMachine(new ParamEvent<string>(showState));
+            //    View.PostToStateMachine(new ParamEvent<string>(showState));
+            RunState(showState, View);
+        }
+
+        protected virtual void RunState(string state, AbstractNode node)
+        {
+            node.PostToStateMachine(new ParamEvent<string>(state));
         }
         public void Dispose()
         {

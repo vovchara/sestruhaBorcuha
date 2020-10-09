@@ -50,7 +50,14 @@ namespace Scene.Src.Controller
 
         private void OnTimeEnd()
         {
+            _levelPopup.ShowTooltip("TIME IS UP");
+            _levelPopup.OkBtnClicked += OkBtnClicked;
             Debug.WriteLine("LEVEL TIME END!");
+        }
+
+        private void OkBtnClicked()
+        {
+            OpenLobbyScreen();
         }
 
         private void OnBackClicked()
@@ -63,6 +70,7 @@ namespace Scene.Src.Controller
             if (_levelPopup != null)
             {
                 _levelPopup.BackClicked -= OnBackClicked;
+                _levelPopup.OkBtnClicked -= OkBtnClicked;
                 _levelPopup.TimerEnd -= OnTimeEnd;
                 _levelPopup.Win -= OnWin;
                 _levelPopup.Loose -= OnLoose;

@@ -29,7 +29,7 @@ namespace Scene.Src.Model
             {
                 new LevelConfigModel(1, 30, 3),
                 new LevelConfigModel(2, 25, 2),
-                new LevelConfigModel(3, 20, 2)
+                new LevelConfigModel(3, 2, 2)
             };
         }
 

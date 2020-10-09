@@ -16,7 +16,7 @@ namespace Scene.Src.Controller
 
         protected ControllerBase()
         {
-            var rootStorage = RootStorage.getInstance();
+             var rootStorage = RootStorage.getInstance();
             _game = rootStorage.Game;
             _rootScene = rootStorage.RootScene;
         }

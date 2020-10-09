@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Monosyne.Events;
 
 namespace Scene.Src.View
 {
@@ -18,12 +19,17 @@ namespace Scene.Src.View
         public event Action Win = delegate { };
         public event Action Loose = delegate { };
         public event Action TimerEnd = delegate { };
+        public event Action OkBtnClicked = delegate { };
 
         private readonly BitmapTextNode _timerTxt;
         private readonly BitmapTextNode _titletxt;
         private readonly ButtonNode _backBtn;
         private readonly ControlNode _buttonOne;
         private readonly ControlNode _buttonTwo;
+        private readonly ControlNode _tooltip;
+        private readonly ButtonNode _popupOkButton;
+        private readonly BitmapTextNode _popupOkBtnName;
+        private readonly BitmapTextNode _popupTitle;
 
         private Timer _lvlTimer;
         private int _currentTimerSec; //30 //29 .. //1 //0
@@ -36,6 +42,10 @@ namespace Scene.Src.View
             _buttonOne = View.FindById<ControlNode>("button_0");
             _buttonTwo = View.FindById<ControlNode>("button_1");
             _titletxt = View.FindById<BitmapTextNode>("titleTxt");
+            _tooltip = View.FindById<ControlNode>("tooltip");
+            _popupOkButton = View.FindById<ButtonNode>("okBtn");
+            _popupOkBtnName = View.FindById<BitmapTextNode>("BtnName");
+            _popupTitle = View.FindById<BitmapTextNode>("gameOverTxt");
 
 
             ShowPopup("showArmGame");
@@ -73,6 +83,20 @@ namespace Scene.Src.View
                 TimerEnd();
                 _lvlTimer.Stop();
             }
+        }
+
+        public void ShowTooltip(string text)
+        {
+            RunState("show", _tooltip);
+            _popupOkBtnName.TextLineRenderer.Text = "OK";
+            _popupTitle.TextLineRenderer.Text = text;
+            _popupOkButton.Clicked += popupOkButton_Clicked;
+        }
+
+        private void popupOkButton_Clicked()
+        {
+            _popupOkButton.Clicked -= popupOkButton_Clicked;
+            OkBtnClicked();
         }
     }
 }

@@ -23,11 +23,11 @@ namespace Scene.Controller
         public void Start()
         {
             _welcomeController = new WelcomeController();
-            _welcomeController.StartNewGame += StartNewGameHandler;
+            _welcomeController.StartNewGame += OpenLobbyHandler;
             _welcomeController.Start();
         }
 
-        private void StartNewGameHandler()
+        private void OpenLobbyHandler()
         {
             DisposeWelcomeIfNeeded();
             
@@ -41,13 +41,13 @@ namespace Scene.Controller
         {
             _levelController = new LevelController(levelNumber);
             _levelController.Start();
-            _levelController.OpenLobbyScreen += OpenLobbyScreenHandler;
+            _levelController.OpenLobbyScreen += BackFromLevelToLobby;
         }
 
-        private void OpenLobbyScreenHandler()
+        private void BackFromLevelToLobby()
         {
             DisposeLevelIfNeded();
-            StartNewGameHandler();
+            OpenLobbyHandler();
         }
 
         private void OpenWelcomePopupHandler()
@@ -67,7 +67,7 @@ namespace Scene.Controller
         {
             if (_levelController != null)
             {
-                _levelController.OpenLobbyScreen -= OpenLobbyScreenHandler;
+                _levelController.OpenLobbyScreen -= BackFromLevelToLobby;
                 _levelController.Dispose();
                 _levelController = null;
             }
@@ -86,7 +86,7 @@ namespace Scene.Controller
         {
             if (_welcomeController != null)
             {
-                _welcomeController.StartNewGame -= StartNewGameHandler;
+                _welcomeController.StartNewGame -= OpenLobbyHandler;
                 _welcomeController.Dispose();
                 _welcomeController = null;
             }
