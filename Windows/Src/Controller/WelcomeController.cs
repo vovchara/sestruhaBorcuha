@@ -17,10 +17,17 @@ namespace Scene.Controller
         {
             _welcomePopup = new WelcomePopup(_game);
             _welcomePopup.UserClickedStartGame += OnUserClickedStart;
+            _welcomePopup.WrongNameEntered += WrongNameWasEntered;
             
             var view = _welcomePopup.View;
             _rootScene.AddChild(view);
         }
+
+      private void WrongNameWasEntered()
+        {
+            Dispose();
+            Start();
+        } 
 
         private void OnUserClickedStart(string userName)
         {
@@ -32,6 +39,7 @@ namespace Scene.Controller
         {
             if (_welcomePopup != null)
             {
+                _welcomePopup.WrongNameEntered -= WrongNameWasEntered;
                 _welcomePopup.UserClickedStartGame -= OnUserClickedStart;
                 _welcomePopup.Dispose();
             }

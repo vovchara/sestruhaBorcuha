@@ -16,8 +16,6 @@ namespace Scene.Src.View
     public class LevelPopup : PopupBase
     {
         public event Action BackClicked = delegate { };
-        public event Action Win = delegate { };
-        public event Action Loose = delegate { };
         public event Action TimerEnd = delegate { };
         public event Action OkBtnClicked = delegate { };
         public event Action<int> ActionButtonClicked = delegate { };
@@ -34,8 +32,9 @@ namespace Scene.Src.View
         private readonly BitmapTextNode _popupOkBtnName;
         private readonly BitmapTextNode _popupTitle;
         private readonly ControlNode _armStates;
+        private readonly BitmapTextNode _zeroBtnText;
+        private readonly BitmapTextNode _oneBtnText;
 
-        private Timer _lvlTimer;
         private int _currentTimerSec; //30 //29 .. //1 //0
         private string _lvlId;
 
@@ -53,48 +52,35 @@ namespace Scene.Src.View
             _popupOkBtnName = View.FindById<BitmapTextNode>("OkBtnName");
             _popupTitle = View.FindById<BitmapTextNode>("gameOverTxt");
             _armStates = View.FindById<ControlNode>("arm_states");
+            _zeroBtnText = _buttonZero.FindById<BitmapTextNode>("BtnName");
+            _oneBtnText = _buttonOne.FindById<BitmapTextNode>("BtnName");
 
+            RunState("active", _btnZeroStates);
+            RunState("active", _btnOneStates);
 
             ShowPopup("showArmGame");
 
-            StartTimer(config.LevelTimeSec);
             _lvlId = config.LevelId.ToString();
             _titletxt.TextLineRenderer.Text = $"Level {_lvlId}";
-            _backBtn.Clicked += _backBtn_IsClicked;
+            _backBtn.Clicked += BackBtn_IsClicked;
             _buttonZero.Clicked += () => ActionButtonClicked(0);
             _buttonOne.Clicked += () => ActionButtonClicked(1);
 
         }
 
-        private void _backBtn_IsClicked()
+        private void BackBtn_IsClicked()
         {
-            _backBtn.Clicked -= _backBtn_IsClicked;
+            _backBtn.Clicked -= BackBtn_IsClicked;
             BackClicked();
         }
 
-        private void StartTimer(int sec)
+        public void ShowCurrentTimer(int sec)
         {
             _currentTimerSec = sec;
             _timerTxt.TextLineRenderer.Text = sec.ToString();
-
-            _lvlTimer = new Timer(1000);
-            _lvlTimer.Elapsed += OnTimerTick;
-            _lvlTimer.Start();
         }
 
-        private void OnTimerTick(object sender, ElapsedEventArgs e)
-        {
-            _currentTimerSec--;
-            _timerTxt.TextLineRenderer.Text = _currentTimerSec.ToString();
-
-            if (_currentTimerSec == 0)
-            {
-                TimerEnd();
-                _lvlTimer.Stop();
-            }
-        }
-
-        public void ShowTooltip(string text)
+    public void ShowTooltip(string text)
         {
             RunState("show", _tooltip);
             _popupOkBtnName.TextLineRenderer.Text = "OK";
@@ -110,16 +96,16 @@ namespace Scene.Src.View
 
         public void EnableButton0()
         {
-            RunState("active", _btnZeroStates);
-            RunState("default", _btnOneStates);
+            _zeroBtnText.TextLineRenderer.Text = "PRESS";
+            _oneBtnText.TextLineRenderer.Text = "";
         }
         public void EnableButton1()
         {
-            RunState("active", _btnOneStates);
-            RunState("default", _btnZeroStates);
+            _oneBtnText.TextLineRenderer.Text = "PRESS";
+            _zeroBtnText.TextLineRenderer.Text = "";
         }
 
-        public void ProgressStates(int state, int buttonId)
+        public void ProgressStates(int state)
         {
             switch(state)
             {
@@ -134,7 +120,6 @@ namespace Scene.Src.View
                     break;
                 case 4:
                     RunState("win", _armStates);
-                    Win();
                     break;
                 case -1:
                     RunState("minusOne", _armStates);
@@ -148,21 +133,9 @@ namespace Scene.Src.View
                 case -4:
                     RunState("lose", _armStates);
                     break;
-                default:
+                case 0:
                     RunState("startState", _armStates);
                     break;
-            }
-            if (state == 4)
-            {
-                Win();
-            }
-            else if (state == -4)
-            {
-                Loose();
-            }
-            else
-            {
-                ActionButtonClicked(buttonId);
             }
         }
     }

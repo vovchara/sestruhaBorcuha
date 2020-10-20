@@ -15,10 +15,12 @@ namespace Scene.Src.Controller
         public event Action OpenLobbyScreen = delegate { };
         private readonly int _levelToOpen;
         private LevelPopup _levelPopup;
-    //    private Timer _btnTimer;
+        private Timer _btnTimer;
         private LevelConfigModel _levelConfig;
         private int _correctButtonId;
         private int _progressId = 0;
+        private int _currentTimerSec;
+        private Timer _lvlTimer;
 
         public LevelController(int levelNumber)
         {
@@ -38,17 +40,46 @@ namespace Scene.Src.Controller
             _levelPopup = new LevelPopup(_game, _levelConfig);
             _levelPopup.BackClicked += OnBackClicked;
             _levelPopup.TimerEnd += OnTimeEnd;
-            _levelPopup.Win += OnWin;
-            _levelPopup.Loose += OnLoose;
             _levelPopup.ActionButtonClicked += ActionButtonIsClickedHandler;
-            InitializeActionButtons();
+
+            StartLvlTimer();
+
+            _btnTimer = new Timer(_levelConfig.ButtonsActiveTimeSec * 1000);
+            _btnTimer.AutoReset = false;
+            _btnTimer.Elapsed += OnBtnTimerTik;
+
+            ActivateButton();
 
             var view = _levelPopup.View;
             _rootScene.AddChild(view);
         }
 
+        private void StartLvlTimer()
+        {
+            _currentTimerSec = _levelConfig.LevelTimeSec;
+            _levelPopup.ShowCurrentTimer(_currentTimerSec);
+            _lvlTimer = new Timer(1000);
+            _lvlTimer.Elapsed += OnTimerTick;
+            _lvlTimer.Start();
+        }
+
+        private void OnTimerTick(object sender, ElapsedEventArgs e)  
+        {
+            if (_currentTimerSec == 0)
+            {
+                OnTimeEnd();
+                _lvlTimer.Stop();
+            }
+            else
+            {
+                _currentTimerSec--;
+            }
+            _levelPopup.ShowCurrentTimer(_currentTimerSec);
+        }
+
         private void ActionButtonIsClickedHandler(int btnId)
         {
+            _btnTimer.Stop();
             if (btnId == _correctButtonId)
             {
                 _progressId++;
@@ -57,19 +88,24 @@ namespace Scene.Src.Controller
             {
                 _progressId--;
             }
-            _levelPopup.ActionButtonClicked -= ActionButtonIsClickedHandler;
-            InitializeActionButtons();
-            _levelPopup.ProgressStates(_progressId, _correctButtonId);
-            _levelPopup.ActionButtonClicked += ActionButtonIsClickedHandler;
-            //визвати метод з вюшки
+            UpdateState();
         }
 
-        private void InitializeActionButtons()
+        private void UpdateState()
         {
-            ActivateButton();
-          //  _btnTimer = new Timer(_levelConfig.ButtonsActiveTimeSec*1000);
-          //  _btnTimer.Elapsed += OnBtnTimerTik;
-          //  _btnTimer.Start();
+            _levelPopup.ProgressStates(_progressId);
+            if (_progressId == 4)
+            {
+                OnWin();
+            }
+            else if (_progressId == -4)
+            {
+                OnLoose();
+            }
+            else
+            {
+                ActivateButton();
+            }
         }
 
         private void ActivateButton()
@@ -84,27 +120,34 @@ namespace Scene.Src.Controller
             {
                 _levelPopup.EnableButton1();
             }
+            _btnTimer.Start();
         }
 
-    //    private void OnBtnTimerTik(object sender, ElapsedEventArgs e)
-    //    {
 
-    //    }
+
+        private void OnBtnTimerTik(object sender, ElapsedEventArgs e)
+        {
+           _progressId --;
+            UpdateState();
+        }
 
         private void OnLoose()
         {
+            _lvlTimer.Stop();
             _levelPopup.ShowTooltip("YOU LOSE");
             _levelPopup.OkBtnClicked += OkBtnClicked;
         }
 
         private void OnWin()
         {
+            _lvlTimer.Stop();
             _levelPopup.ShowTooltip("YOU WIN");
             _levelPopup.OkBtnClicked += OkBtnClicked;
         }
 
         private void OnTimeEnd()
         {
+            _lvlTimer.Stop();
             _levelPopup.ShowTooltip("TIME IS UP");
             _levelPopup.OkBtnClicked += OkBtnClicked;
             Debug.WriteLine("LEVEL TIME END!");
@@ -128,8 +171,6 @@ namespace Scene.Src.Controller
                 _levelPopup.OkBtnClicked -= OkBtnClicked;
                 _levelPopup.ActionButtonClicked -= ActionButtonIsClickedHandler;
                 _levelPopup.TimerEnd -= OnTimeEnd;
-                _levelPopup.Win -= OnWin;
-                _levelPopup.Loose -= OnLoose;
                 _levelPopup.Dispose();
             }
         }

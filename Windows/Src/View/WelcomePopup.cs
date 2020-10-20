@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Monosyne;
 using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
@@ -9,11 +10,14 @@ namespace Scene.View
     public class WelcomePopup : PopupBase
     {
         public event Action<string> UserClickedStartGame = delegate { };
+        public event Action WrongNameEntered = delegate { };
 
         private readonly BitmapTextNode _tittle;
         private readonly ButtonNode _centralButton;
         private readonly MultilineBitmapTextNode _inputNameTxt;
         private readonly ButtonNode _backButton;
+
+        private string _userName;
 
         public WelcomePopup(Game game) : base(game, "welcome.bip", "sceneWelcomePopup4x3.object")
         {
@@ -29,10 +33,24 @@ namespace Scene.View
             _centralButton.Clicked += OnCentralClicked;
         }
 
+        private void NameValidation(string name)
+        {
+            var nameLenght = name.Length;
+            if (nameLenght <= 3)
+            {
+                WrongNameEntered();
+            }
+            else
+            {
+                UserClickedStartGame(_userName);
+            }
+        }
+
         private void OnCentralClicked()
         {
-            var userName = _inputNameTxt.TextRenderer.Text;
-            UserClickedStartGame(userName);
+            _userName = _inputNameTxt.TextRenderer.Text;
+            _centralButton.Clicked -= OnCentralClicked;
+            NameValidation(_userName);
         }
         
     }

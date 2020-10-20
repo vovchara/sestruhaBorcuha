@@ -46,6 +46,7 @@ namespace Scene.Src.View
             _lvlOneBtn.Clicked += () => lvlBtnIsClicked(1);
             _lvlTwoBtn.Clicked += () => lvlBtnIsClicked(2);
             _lvlThreeBtn.Clicked += () => lvlBtnIsClicked(3);
+            _lvlFourBtn.Clicked += () => lvlBtnIsClicked(4);
         }
 
 
