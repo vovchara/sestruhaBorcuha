@@ -33,7 +33,7 @@ namespace Scene.Src.View
         {
             node.PostToStateMachine(new ParamEvent<string>(state));
         }
-        public void Dispose()
+        public virtual void Dispose()
         {
             Debug.WriteLine($"Killing Popup Res: {_resName} Scene: {_sceneName}");
             _packageContentManager.Dispose();

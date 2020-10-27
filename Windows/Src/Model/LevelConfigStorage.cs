@@ -27,11 +27,16 @@ namespace Scene.Src.Model
         {
             _levels = new []
             {
-                new LevelConfigModel(1, 30, 2),
-                new LevelConfigModel(2, 25, 1),
-                new LevelConfigModel(3, 15, 0.8f),
-                new LevelConfigModel(4, 10, 0.5f)
+                new LevelConfigModel(1, 30, 0.5f, 0),
+                new LevelConfigModel(2, 25, 1, 1),
+                new LevelConfigModel(3, 15, 0.8f, 2),
+                new LevelConfigModel(4, 10, 0.7f, 3)
             };
+        }
+
+        public LevelConfigModel[] GetAllLevelConfigs()
+        {
+            return _levels;
         }
 
         public LevelConfigModel GetConfig(int levelId)

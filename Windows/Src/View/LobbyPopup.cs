@@ -23,7 +23,7 @@ namespace Scene.Src.View
         private readonly ButtonNode _lvlSevenBtn;
         private readonly ButtonNode _lvlEightBtn;
 
-         public LobbyPopup(Game game, string userData) : base(game, "lobby.bip", "sceneLobbyPopup.object")
+         public LobbyPopup(Game game, string userName, long userScore ) : base(game, "lobby.bip", "sceneLobbyPopup.object")
          {
 
             _soundBtn = View.FindById<WidgetNode>("SoundContainer");
@@ -41,33 +41,52 @@ namespace Scene.Src.View
 
             ShowPopup("showLobbyPopup");
 
-            _nameTxt.TextLineRenderer.Text = userData;
-            _backBtn.Clicked += backBtn_isClicked;
+            _lvlOneBtn.Hidden = true;
+            _lvlTwoBtn.Hidden = true;
+            _lvlThreeBtn.Hidden = true;
+            _lvlFourBtn.Hidden = true;
+            _lvlFiveBtn.Hidden = true;
+            _lvlSixBtn.Hidden = true;
+            _lvlSevenBtn.Hidden = true;
+            _lvlEightBtn.Hidden = true;
+
+            _nameTxt.TextLineRenderer.Text = userName;
+            _scoresTxt.TextLineRenderer.Text = userScore.ToString();
+            _backBtn.Clicked += () => backBtnClicked();
             _lvlOneBtn.Clicked += () => lvlBtnIsClicked(1);
             _lvlTwoBtn.Clicked += () => lvlBtnIsClicked(2);
             _lvlThreeBtn.Clicked += () => lvlBtnIsClicked(3);
             _lvlFourBtn.Clicked += () => lvlBtnIsClicked(4);
         }
-
-
-        //private void lvlBtn_isClicked() => lvlBtnIsClicked(1);
-
-        //incorrect
-        //protected override void ShowPopup(string showState)
-        //{
-        //    View.PostToStateMachine(null);
-        //}
-
-        //correct
-        //protected override void ShowPopup(string showState)
-        //{
-        //   base.ShowPopup(showState);
-        //   View.PostToStateMachine(null);
-        //}
-
-        private void backBtn_isClicked()
+        public void EnableLevel(int lvl)
         {
-            backBtnClicked();
+            switch(lvl)
+            {
+                case 1:
+                    _lvlOneBtn.Hidden = false;
+                    break;
+                case 2:
+                    _lvlTwoBtn.Hidden = false;
+                    break;
+                case 3:
+                    _lvlThreeBtn.Hidden = false;
+                    break;
+                case 4:
+                    _lvlFourBtn.Hidden = false;
+                    break;
+                case 5:
+                    _lvlFiveBtn.Hidden = false;
+                    break;
+                case 6:
+                    _lvlSixBtn.Hidden = false;
+                    break;
+                case 7:
+                    _lvlSevenBtn.Hidden = false;
+                    break;
+                case 8:
+                    _lvlEightBtn.Hidden = false;
+                    break;
+            }
         }
     }
 }

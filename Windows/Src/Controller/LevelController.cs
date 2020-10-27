@@ -1,4 +1,5 @@
-﻿using Scene.Src.Model;
+﻿using Scene.Model;
+using Scene.Src.Model;
 using Scene.Src.View;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Scene.Src.Controller
             _levelPopup.BackClicked += OnBackClicked;
             _levelPopup.TimerEnd += OnTimeEnd;
             _levelPopup.ActionButtonClicked += ActionButtonIsClickedHandler;
+            _levelPopup.OkBtnClicked += OkBtnClicked;
 
             StartLvlTimer();
 
@@ -133,23 +135,26 @@ namespace Scene.Src.Controller
 
         private void OnLoose()
         {
+            var userData = UserStorage.getInstance();
+            if (userData.UserScore > 0)
+            {
+                userData.UserScore--;
+            }
             _lvlTimer.Stop();
             _levelPopup.ShowTooltip("YOU LOSE");
-            _levelPopup.OkBtnClicked += OkBtnClicked;
         }
 
         private void OnWin()
         {
+            UserStorage.getInstance().UserScore++;
             _lvlTimer.Stop();
             _levelPopup.ShowTooltip("YOU WIN");
-            _levelPopup.OkBtnClicked += OkBtnClicked;
         }
 
         private void OnTimeEnd()
         {
             _lvlTimer.Stop();
             _levelPopup.ShowTooltip("TIME IS UP");
-            _levelPopup.OkBtnClicked += OkBtnClicked;
             Debug.WriteLine("LEVEL TIME END!");
         }
 

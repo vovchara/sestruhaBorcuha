@@ -10,7 +10,6 @@ namespace Scene.View
     public class WelcomePopup : PopupBase
     {
         public event Action<string> UserClickedStartGame = delegate { };
-        public event Action WrongNameEntered = delegate { };
 
         private readonly BitmapTextNode _tittle;
         private readonly ButtonNode _centralButton;
@@ -38,7 +37,7 @@ namespace Scene.View
             var nameLenght = name.Length;
             if (nameLenght <= 3)
             {
-                WrongNameEntered();
+            //    WrongNameEntered();
             }
             else
             {
@@ -49,9 +48,14 @@ namespace Scene.View
         private void OnCentralClicked()
         {
             _userName = _inputNameTxt.TextRenderer.Text;
-            _centralButton.Clicked -= OnCentralClicked;
             NameValidation(_userName);
         }
-        
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _centralButton.Clicked -= OnCentralClicked;
+        }
+
     }
 }
