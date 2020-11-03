@@ -1,8 +1,10 @@
 using System;
 using Monosyne;
 using Monosyne.Scene.V3;
+using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src.Controller;
+using Scene.Src.Model;
 using Scene.View;
 
 namespace Scene.Controller
@@ -12,6 +14,7 @@ namespace Scene.Controller
         public event Action StartNewGame = delegate { };
 
         private WelcomePopup _welcomePopup;
+        private UserStorage _userStorage;
 
         public void Start()
         {
@@ -22,11 +25,21 @@ namespace Scene.Controller
             _rootScene.AddChild(view);
         }
 
-        private void OnUserClickedStart(string userName)
+        public void OnUserClickedStart(string userName)
         {
-            UserStorage.getInstance().UserScore = 0;
-            UserStorage.getInstance().UserName = userName;
-            StartNewGame();
+            _userStorage = UserStorage.getInstance();
+            var isUserExist = _userStorage.CheckExistingUsers(userName);
+            if (isUserExist)
+            {
+                // show error popup
+                return;
+            }
+            else
+            {
+                var userModel = new UserModel(userName, 0);
+                _userStorage.AddMyUser(userModel);
+                StartNewGame();
+            }
         }
 
         public void Dispose()

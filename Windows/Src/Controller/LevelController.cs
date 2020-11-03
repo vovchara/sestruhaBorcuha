@@ -135,7 +135,7 @@ namespace Scene.Src.Controller
 
         private void OnLoose()
         {
-            var userData = UserStorage.getInstance();
+            var userData = UserStorage.getInstance().MyUserModel;
             if (userData.UserScore > 0)
             {
                 userData.UserScore--;
@@ -146,7 +146,7 @@ namespace Scene.Src.Controller
 
         private void OnWin()
         {
-            UserStorage.getInstance().UserScore++;
+            UserStorage.getInstance().MyUserModel.UserScore++;
             _lvlTimer.Stop();
             _levelPopup.ShowTooltip("YOU WIN");
         }

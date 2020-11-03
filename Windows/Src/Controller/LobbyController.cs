@@ -1,6 +1,8 @@
 using Monosyne;
 using Monosyne.Scene.V3;
+using Newtonsoft.Json;
 using Scene.Model;
+using Scene.Src;
 using Scene.Src.Controller;
 using Scene.Src.Model;
 using Scene.Src.View;
@@ -14,19 +16,19 @@ namespace Scene.Controller
         public event Action<int> OpenLevelPopup = delegate { };
 
         private LobbyPopup _lobbyPopup;
-        private string _userName;
-        private readonly long _userScore;
+        private readonly UserModel _myUserModel;
         private readonly LevelConfigStorage _levelConfigStorage;
 
         public LobbyController()
         {
-            _userName = UserStorage.getInstance().UserName;
-            _userScore = UserStorage.getInstance().UserScore;
+            _myUserModel = UserStorage.getInstance().MyUserModel;
             _levelConfigStorage = LevelConfigStorage.getInstance();
         }
         public void Start()
         {
-            _lobbyPopup = new LobbyPopup(_game, _userName, _userScore);
+            SaveUserToDisk();
+
+            _lobbyPopup = new LobbyPopup(_game, _myUserModel.UserName, _myUserModel.UserScore);
             var view = _lobbyPopup.View;
             _rootScene.AddChild(view);
 
@@ -34,13 +36,23 @@ namespace Scene.Controller
             _lobbyPopup.lvlBtnIsClicked += OnUserClicked_lvlBtn;
 
             var levelsConfigs = _levelConfigStorage.GetAllLevelConfigs();
+            //  var levelsConfigs = System.IO.File.Exists(ConfigConstants.LevelConfigPath);
+            //  var savedLevelConfigs = System.IO.File.ReadAllText(ConfigConstants.LevelConfigPath);
+            //   var arrayOfLevelConfigs = JsonConvert.DeserializeObject<LevelConfigModel[]>(savedLevelConfigs);
             foreach (LevelConfigModel conf in levelsConfigs)
             {
-                if(conf.MinScores <= _userScore)
+                if(conf.MinScores <= _myUserModel.UserScore)
                 {
                     _lobbyPopup.EnableLevel(conf.LevelId);
                 }
             }
+        }
+
+        private void SaveUserToDisk()
+        {
+            var allUsers = UserStorage.getInstance().AllUsers;
+            var allUsersJson = JsonConvert.SerializeObject(allUsers, Formatting.Indented);
+            System.IO.File.WriteAllText(ConfigConstants.UserSavePath, allUsersJson);
         }
 
         private void OnUserClicked_lvlBtn(int levelNumber)

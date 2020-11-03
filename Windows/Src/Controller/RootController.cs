@@ -22,6 +22,10 @@ namespace Scene.Controller
 
         public void Start()
         {
+            var loadController = new LoadController();
+            loadController.Start();
+            loadController.Dispose();
+
             _welcomeController = new WelcomeController();
             _welcomeController.StartNewGame += OpenLobbyHandler;
             _welcomeController.Start();
