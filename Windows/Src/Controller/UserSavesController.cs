@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Scene.Src.Controller
 {
-    public class LoadController : ControllerBase
+    public class UserSavesController : ControllerBase
     {
         public void Start()
         {

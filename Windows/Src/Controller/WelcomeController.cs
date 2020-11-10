@@ -12,6 +12,8 @@ namespace Scene.Controller
     public class WelcomeController : ControllerBase
     {
         public event Action StartNewGame = delegate { };
+        public event Action OpenLeaderBoard = delegate { };
+        public event Action LoadGame = delegate { };
 
         private WelcomePopup _welcomePopup;
         private UserStorage _userStorage;
@@ -20,9 +22,21 @@ namespace Scene.Controller
         {
             _welcomePopup = new WelcomePopup(_game);
             _welcomePopup.UserClickedStartGame += OnUserClickedStart;
+            _welcomePopup.UserClickedLeaderBoardButton += OnUserClickedLeaderBoard;
+            _welcomePopup.UserClickedLoadGameButton += OnUserClickedLoadGameButton;
             
             var view = _welcomePopup.View;
             _rootScene.AddChild(view);
+        }
+
+        private void OnUserClickedLoadGameButton()
+        {
+            LoadGame();
+        }
+
+        private void OnUserClickedLeaderBoard()
+        {
+            OpenLeaderBoard();
         }
 
         public void OnUserClickedStart(string userName)

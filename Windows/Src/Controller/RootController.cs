@@ -2,6 +2,7 @@ using Monosyne;
 using Monosyne.Scene.V3;
 using Scene.Model;
 using Scene.Src.Controller;
+using Scene.Src.Model;
 using Scene.Src.View;
 using System;
 
@@ -12,6 +13,8 @@ namespace Scene.Controller
         private WelcomeController _welcomeController;
         private LobbyController _lobbyController;
         private LevelController _levelController;
+        private LeaderBoardController _ledearBoardController;
+        private LoadGameController _loadGameController;
 
         public RootController(Game game, RenderStatesNode rootSceneNode)
         {
@@ -22,13 +25,45 @@ namespace Scene.Controller
 
         public void Start()
         {
-            var loadController = new LoadController();
-            loadController.Start();
-            loadController.Dispose();
+            var userSaves = new UserSavesController();
+            userSaves.Start();
+            userSaves.Dispose();
 
             _welcomeController = new WelcomeController();
             _welcomeController.StartNewGame += OpenLobbyHandler;
+            _welcomeController.OpenLeaderBoard += OpenLeaderBoardHandler;
+            _welcomeController.LoadGame += LoadGameHandler;
             _welcomeController.Start();
+        }
+
+        private void LoadGameHandler()
+        {
+            _loadGameController = new LoadGameController();
+            _loadGameController.Start();
+            _loadGameController.CloseLoadGamePopup += CloseLoadGamePopupHandler;
+            _loadGameController.ContinueGameForUser += ContinueGameForUserHandler;
+        }
+
+        private void ContinueGameForUserHandler(UserModel obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CloseLoadGamePopupHandler()
+        {
+            DisposeLoadGamePopupIfNeeded();
+        }
+
+        private void OpenLeaderBoardHandler()
+        {
+            _ledearBoardController = new LeaderBoardController();
+            _ledearBoardController.Start();
+            _ledearBoardController.CloseLeaderBoard += CloseLeaderBoardHandler;
+        }
+
+        private void CloseLeaderBoardHandler()
+        {
+            DisposeLeaderBoardIfNeeded();
         }
 
         private void OpenLobbyHandler()
@@ -65,6 +100,28 @@ namespace Scene.Controller
             DisposeWelcomeIfNeeded();
             DisposeLobbyIfNeeded();
             DisposeLevelIfNeded();
+            DisposeLeaderBoardIfNeeded();
+            DisposeLoadGamePopupIfNeeded();
+        }
+
+        private void DisposeLeaderBoardIfNeeded()
+        {
+            if (_ledearBoardController != null)
+            {
+                _ledearBoardController.CloseLeaderBoard -= CloseLeaderBoardHandler;
+                _ledearBoardController.Dispose();
+                _ledearBoardController = null;
+            }
+        }
+
+        private void DisposeLoadGamePopupIfNeeded()
+        {
+            if (_loadGameController != null)
+            {
+                _loadGameController.CloseLoadGamePopup -= CloseLoadGamePopupHandler;
+                _loadGameController.Dispose();
+                _loadGameController = null;
+            }
         }
 
         private void DisposeLevelIfNeded()

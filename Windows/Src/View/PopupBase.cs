@@ -36,6 +36,10 @@ namespace Scene.Src.View
         public virtual void Dispose()
         {
             Debug.WriteLine($"Killing Popup Res: {_resName} Scene: {_sceneName}");
+            if ((View.Parent as ContainerNode) != null)
+            {
+                (View.Parent as ContainerNode).RemoveChild(View, Monosyne.Components.ComponentRemoveMode.Dispose);
+            }
             _packageContentManager.Dispose();
         }
     }

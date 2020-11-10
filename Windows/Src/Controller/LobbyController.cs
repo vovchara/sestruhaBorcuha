@@ -39,7 +39,7 @@ namespace Scene.Controller
             //  var levelsConfigs = System.IO.File.Exists(ConfigConstants.LevelConfigPath);
             //  var savedLevelConfigs = System.IO.File.ReadAllText(ConfigConstants.LevelConfigPath);
             //   var arrayOfLevelConfigs = JsonConvert.DeserializeObject<LevelConfigModel[]>(savedLevelConfigs);
-            foreach (LevelConfigModel conf in levelsConfigs)
+            foreach (var conf in levelsConfigs)
             {
                 if(conf.MinScores <= _myUserModel.UserScore)
                 {
