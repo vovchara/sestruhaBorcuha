@@ -38,24 +38,28 @@ namespace Scene.Controller
 
         private void LoadGameHandler()
         {
+            _welcomeController.Dispose();
             _loadGameController = new LoadGameController();
             _loadGameController.Start();
             _loadGameController.CloseLoadGamePopup += CloseLoadGamePopupHandler;
             _loadGameController.ContinueGameForUser += ContinueGameForUserHandler;
         }
 
-        private void ContinueGameForUserHandler(UserModel obj)
+        private void ContinueGameForUserHandler(UserModel userSave)
         {
-            throw new NotImplementedException();
+            UserStorage.getInstance().MyUserModel = userSave;
+            OpenLobbyHandler();
         }
 
         private void CloseLoadGamePopupHandler()
         {
             DisposeLoadGamePopupIfNeeded();
+            Start();
         }
 
         private void OpenLeaderBoardHandler()
         {
+            _welcomeController.Dispose();
             _ledearBoardController = new LeaderBoardController();
             _ledearBoardController.Start();
             _ledearBoardController.CloseLeaderBoard += CloseLeaderBoardHandler;
@@ -64,6 +68,7 @@ namespace Scene.Controller
         private void CloseLeaderBoardHandler()
         {
             DisposeLeaderBoardIfNeeded();
+            Start();
         }
 
         private void OpenLobbyHandler()

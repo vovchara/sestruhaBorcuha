@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Monosyne;
 using Monosyne.Scene.V3;
@@ -41,6 +42,7 @@ namespace Scene.View
             ShowPopup("showPopup");
 
             _backButton.Hidden = true;
+            _tittle.TransformModel.PositionX = 200;
             _tittle.TextLineRenderer.Text = "Borcuha";
             _startNewGameButton.Clicked += OnNewGameClicked;
             _leaderBoardButton.Clicked += OnLeaderBoardButtonClicked;
@@ -60,14 +62,12 @@ namespace Scene.View
         private void NameValidation(string name)
         {
             var nameLenght = name.Length;
-            if (nameLenght <= 3)
-            {
-            //    WrongNameEntered();
-            }
-            else
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (nameLenght > 3 && regexItem.IsMatch(name))
             {
                 UserClickedStartGame(_userName);
             }
+            return;
         }
 
         private void OnNewGameClicked()

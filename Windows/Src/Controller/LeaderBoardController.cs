@@ -30,7 +30,7 @@ namespace Scene.Src.Controller
             var result = new List<ScoreItemView>();
             for (int i = 0; i < sortedUsers.Length; i++)
             {
-                var scoreItemView = new ScoreItemView(_game, sortedUsers[i], i);
+                var scoreItemView = new ScoreItemView(_game, sortedUsers[i], i+1);
                 result.Add(scoreItemView);
             }
             return result.ToArray();
@@ -38,6 +38,7 @@ namespace Scene.Src.Controller
 
         private void OnBackButtonClicked()
         {
+            Dispose();
             CloseLeaderBoard();
         }
 

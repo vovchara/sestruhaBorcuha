@@ -17,8 +17,15 @@ namespace Scene.Src.Controller
             if (hasSavedUsers)
             {
                 var savedUsersText = System.IO.File.ReadAllText(ConfigConstants.UserSavePath);
-                var arrayOfUsers = JsonConvert.DeserializeObject<UserModel[]>(savedUsersText);
-                UserStorage.getInstance().AllUsers = arrayOfUsers.ToList();
+                if (savedUsersText == "")
+                {
+                    UserStorage.getInstance().AllUsers = new List<UserModel>();
+                }
+                else
+                {
+                    var arrayOfUsers = JsonConvert.DeserializeObject<UserModel[]>(savedUsersText);
+                    UserStorage.getInstance().AllUsers = arrayOfUsers.ToList();
+                }
             }
             else
             {

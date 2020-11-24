@@ -28,6 +28,7 @@ namespace Scene.Src.Controller
         private void OnContinueBtnIsClicked(UserModel user)
         {
             ContinueGameForUser(user);
+            _loadGamePopup.Dispose();
         }
 
         private LoadGameItemView [] GetSavedUsers()
@@ -52,6 +53,8 @@ namespace Scene.Src.Controller
         {
             if (_loadGamePopup != null)
             {
+                _loadGamePopup.BackBtnIsClicked -= OnBackBtnIsClicked;
+                _loadGamePopup.LoadGameForUser -= OnContinueBtnIsClicked;
                 _loadGamePopup.Dispose();
             }
         }
