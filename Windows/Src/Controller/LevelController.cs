@@ -38,6 +38,7 @@ namespace Scene.Src.Controller
             {
                 Debug.WriteLine($"Can not popup for start level:{_levelToOpen}");
                 OpenLobbyScreen();
+                return;
             }
 
             _levelPopup = new LevelPopup(_game, _levelConfig);
@@ -172,12 +173,15 @@ namespace Scene.Src.Controller
 
         public void Dispose()
         {
-            if (_levelPopup != null)
+            if(_btnTimer!= null && _lvlTimer != null)
             {
                 _btnTimer.Elapsed -= OnBtnTimerTik;
                 _btnTimer.Stop();
                 _lvlTimer.Elapsed -= OnTimerTick;
                 _lvlTimer.Stop();
+            }
+            if (_levelPopup != null)
+            {
                 _levelPopup.BackClicked -= OnBackClicked;
                 _levelPopup.OkBtnClicked -= OkBtnClicked;
                 _levelPopup.ActionButtonClicked -= ActionButtonIsClickedHandler;

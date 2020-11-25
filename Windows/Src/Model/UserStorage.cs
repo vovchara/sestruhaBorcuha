@@ -1,5 +1,6 @@
 using Scene.Src.Model;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Scene.Model
@@ -38,8 +39,13 @@ namespace Scene.Model
 
         public void AddMyUser(UserModel userModel)
         {
-            getInstance().MyUserModel = userModel;
-            getInstance().AllUsers.Add(userModel);
+            if (CheckExistingUsers(userModel.UserName))
+            {
+                Debug.WriteLine($"User already exists");
+                return;
+            }
+            MyUserModel = userModel;
+            AllUsers.Add(userModel);
         }
         public UserModel []  AllUsersSortedByScore()
         {

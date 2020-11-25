@@ -62,6 +62,8 @@ namespace Scene.Controller
             if (_welcomePopup != null)
             {
                 _welcomePopup.UserClickedStartGame -= OnUserClickedStart;
+                _welcomePopup.UserClickedLeaderBoardButton -= OnUserClickedLeaderBoard;
+                _welcomePopup.UserClickedLoadGameButton -= OnUserClickedLoadGameButton;
                 _welcomePopup.Dispose();
             }
         }
