@@ -173,10 +173,13 @@ namespace Scene.Src.Controller
 
         public void Dispose()
         {
-            if(_btnTimer!= null && _lvlTimer != null)
+            if (_btnTimer != null)
             {
                 _btnTimer.Elapsed -= OnBtnTimerTik;
                 _btnTimer.Stop();
+            }
+            if(_lvlTimer != null)
+            {
                 _lvlTimer.Elapsed -= OnTimerTick;
                 _lvlTimer.Stop();
             }
