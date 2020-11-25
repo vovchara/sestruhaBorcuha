@@ -22,6 +22,9 @@ namespace Scene.Src.Controller
         private int _progressId = 0;
         private int _currentTimerSec;
         private Timer _lvlTimer;
+        private const int WinProgressId = 4;
+        private const int LooseProgressId = -4;
+        private const int PlayButtonAmount = 2;
 
         public LevelController(int levelNumber)
         {
@@ -34,8 +37,7 @@ namespace Scene.Src.Controller
             if (_levelConfig == null)
             {
                 Debug.WriteLine($"Can not popup for start level:{_levelToOpen}");
-                //back to lobby
-                return;
+                OpenLobbyScreen();
             }
 
             _levelPopup = new LevelPopup(_game, _levelConfig);
@@ -96,11 +98,11 @@ namespace Scene.Src.Controller
         private void UpdateState()
         {
             _levelPopup.ProgressStates(_progressId);
-            if (_progressId == 4)
+            if (_progressId == WinProgressId)
             {
                 OnWin();
             }
-            else if (_progressId == -4)
+            else if (_progressId == LooseProgressId)
             {
                 OnLoose();
             }
@@ -113,7 +115,7 @@ namespace Scene.Src.Controller
         private void ActivateButton()
         {
             var random = new Random();
-            _correctButtonId = random.Next(2);
+            _correctButtonId = random.Next(PlayButtonAmount);
             if (_correctButtonId == 0)
             {
                 _levelPopup.EnableButton0();
@@ -172,6 +174,10 @@ namespace Scene.Src.Controller
         {
             if (_levelPopup != null)
             {
+                _btnTimer.Elapsed -= OnBtnTimerTik;
+                _btnTimer.Stop();
+                _lvlTimer.Elapsed -= OnTimerTick;
+                _lvlTimer.Stop();
                 _levelPopup.BackClicked -= OnBackClicked;
                 _levelPopup.OkBtnClicked -= OkBtnClicked;
                 _levelPopup.ActionButtonClicked -= ActionButtonIsClickedHandler;

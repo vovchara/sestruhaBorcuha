@@ -25,7 +25,6 @@ namespace Scene.Src.View
 
         protected virtual void ShowPopup(string showState)
         {
-            //    View.PostToStateMachine(new ParamEvent<string>(showState));
             RunState(showState, View);
         }
 

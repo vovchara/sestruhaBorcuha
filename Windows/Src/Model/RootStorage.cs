@@ -6,9 +6,9 @@ namespace Scene.Model
     public class RootStorage
     {
         private static RootStorage instance;
-
+ 
         private RootStorage()
-        { }
+        {}
  
         public static RootStorage getInstance()
         {

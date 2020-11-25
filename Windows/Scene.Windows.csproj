@@ -162,7 +162,7 @@
     <Compile Include="Src\Controller\LeaderBoardController.cs" />
     <Compile Include="Src\Controller\LevelController.cs" />
     <Compile Include="Src\Controller\ControllerBase.cs" />
-    <Compile Include="Src\Controller\UserSavesController.cs" />
+    <Compile Include="Src\Controller\LoadUserSavesController.cs" />
     <Compile Include="Src\Controller\LoadGameController.cs" />
     <Compile Include="Src\Controller\LobbyController.cs" />
     <Compile Include="Src\Controller\RootController.cs" />

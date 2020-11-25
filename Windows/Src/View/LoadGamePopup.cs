@@ -31,16 +31,6 @@ namespace Scene.Src.View
             _itemContainer = View.FindById<WidgetNode>("item_container");
             _leftArrow = View.FindById<ButtonNode>("leftBtn");
             _rightArrow = View.FindById<ButtonNode>("rightBtn");
-
-            /*  var positionY = 0;
-              foreach (var oneItem in _loadItems)
-              {
-                  _itemContainer.AddChild(oneItem.View);
-                  oneItem.View.TransformModel.PositionY = positionY;
-                  positionY += oneItem.View.BoundingRect.Height;
-                  oneItem.OpenSavedGame += ContinueIsClicked;
-              }
-            */
             ShowLoadItems(0);
             ShowPopup("showBoardPopup");
             _backButton.Clicked += OnBackButtonClicked;
@@ -118,7 +108,7 @@ namespace Scene.Src.View
         {
             base.Dispose();
             _backButton.Clicked -= OnBackButtonClicked;
-                        _rightArrow.Clicked -= NextClicked;
+            _rightArrow.Clicked -= NextClicked;
             _leftArrow.Clicked -= PreviousClicked;
             _itemContainer.RemoveAllChildren(Monosyne.Components.ComponentRemoveMode.Dispose);
             foreach (var oneItemView in _loadItems)

@@ -13,6 +13,7 @@ namespace Scene.Src.View
    public class LoadGameItemView : PopupBase
     {
         private UserModel _user;
+        private ButtonNode _loadButton;
 
         public event Action <UserModel> OpenSavedGame = delegate { };
 
@@ -20,19 +21,28 @@ namespace Scene.Src.View
         {
             var userScore = View.FindById<BitmapTextNode>("userScoreTxt");
             var userName = View.FindById<BitmapTextNode>("userNameTxt");
-            var loadButton = View.FindById<ButtonNode>("loadGameBtn");
+            _loadButton = View.FindById<ButtonNode>("loadGameBtn");
             var loadbtnTxt = View.FindById<BitmapTextNode>("BtnName");
 
             _user = user;
             userName.TextLineRenderer.Text = user.UserName;
             userScore.TextLineRenderer.Text = user.UserScore.ToString();
             loadbtnTxt.TextLineRenderer.Text = "CONTINUE";
-            loadButton.Clicked += OnUserClickedLoadButton;
+            _loadButton.Clicked += OnUserClickedLoadButton;
         }
 
         private void OnUserClickedLoadButton()
         {
             OpenSavedGame(_user);
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            _loadButton.Clicked -= OnUserClickedLoadButton;
+            if (View != null && !View.IsDisposed)
+            {
+                View.Dispose();
+            }
         }
     }
 }

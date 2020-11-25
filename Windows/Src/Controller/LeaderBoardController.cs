@@ -25,12 +25,11 @@ namespace Scene.Src.Controller
 
         private ScoreItemView[] GetSavedUsers()
         {
-            var allUsers = UserStorage.getInstance().AllUsers;
-            var sortedUsers = allUsers.OrderByDescending(user => user.UserScore).ToArray();
+            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
             var result = new List<ScoreItemView>();
-            for (int i = 0; i < sortedUsers.Length; i++)
+            for (int i = 0; i < allUsers.Length; i++)
             {
-                var scoreItemView = new ScoreItemView(_game, sortedUsers[i], i+1);
+                var scoreItemView = new ScoreItemView(_game, allUsers[i], i+1);
                 result.Add(scoreItemView);
             }
             return result.ToArray();
@@ -38,7 +37,6 @@ namespace Scene.Src.Controller
 
         private void OnBackButtonClicked()
         {
-            Dispose();
             CloseLeaderBoard();
         }
 

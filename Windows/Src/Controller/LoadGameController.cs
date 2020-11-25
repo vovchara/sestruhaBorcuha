@@ -28,17 +28,15 @@ namespace Scene.Src.Controller
         private void OnContinueBtnIsClicked(UserModel user)
         {
             ContinueGameForUser(user);
-            _loadGamePopup.Dispose();
         }
 
         private LoadGameItemView [] GetSavedUsers()
         {
-            var allUsers = UserStorage.getInstance().AllUsers;
-            var sortedUsers = allUsers.OrderByDescending(user => user.UserScore).ToArray();
+            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
             var result = new List<LoadGameItemView>();
-            for (int i = 0; i < sortedUsers.Length; i++)
+            for (int i = 0; i < allUsers.Length; i++)
             {
-                var loadItemView = new LoadGameItemView(_game, sortedUsers[i]);
+                var loadItemView = new LoadGameItemView(_game, allUsers[i]);
                 result.Add(loadItemView);
             }
             return result.ToArray();

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Monosyne;
 using Monosyne.Scene.V3;
 using Newtonsoft.Json;
@@ -45,7 +46,7 @@ namespace Scene.Controller
             var isUserExist = _userStorage.CheckExistingUsers(userName);
             if (isUserExist)
             {
-                // show error popup
+                Debug.WriteLine($"User already exists");
                 return;
             }
             else

@@ -81,6 +81,7 @@ namespace Scene.View
             base.Dispose();
             _startNewGameButton.Clicked -= OnNewGameClicked;
             _leaderBoardButton.Clicked -= OnLeaderBoardButtonClicked;
+            _loadGameButton.Clicked -= OnLoadGameButtonClicked;
         }
 
     }

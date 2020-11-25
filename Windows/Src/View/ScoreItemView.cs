@@ -21,6 +21,14 @@ namespace Scene.Src.View
             userScore.TextLineRenderer.Text = user.UserScore.ToString();
             userPlace.TextLineRenderer.Text = position.ToString();
         }
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (View != null && !View.IsDisposed)
+            {
+                View.Dispose();
+            }
+        }
 
     }
 }

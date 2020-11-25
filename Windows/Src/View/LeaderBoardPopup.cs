@@ -82,7 +82,6 @@ namespace Scene.Src.View
                 {
                     _rightArrow.Hidden = true;
                 }
-              //  if (_itemContainer.BoundingRect.Height < positionY + itemHeight)
                 if(_maxItemsInContainer == _visibleItemsIds.Count)
                 {
                     break;

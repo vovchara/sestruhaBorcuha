@@ -1,5 +1,6 @@
 using Scene.Src.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scene.Model
 {
@@ -39,6 +40,11 @@ namespace Scene.Model
         {
             getInstance().MyUserModel = userModel;
             getInstance().AllUsers.Add(userModel);
+        }
+        public UserModel []  AllUsersSortedByScore()
+        {
+            var sortedUsers = AllUsers.OrderByDescending(user => user.UserScore).ToArray();
+            return sortedUsers;
         }
     }
 }
