@@ -158,32 +158,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\ConfigConstants.cs" />
+    <Compile Include="Src\Controller\LeaderBoardController.cs" />
+    <Compile Include="Src\Controller\LevelController.cs" />
     <Compile Include="Src\Controller\ControllerBase.cs" />
+    <Compile Include="Src\Controller\LoadUserSavesController.cs" />
+    <Compile Include="Src\Controller\LoadGameController.cs" />
     <Compile Include="Src\Controller\LobbyController.cs" />
     <Compile Include="Src\Controller\RootController.cs" />
     <Compile Include="Src\Controller\WelcomeController.cs" />
+    <Compile Include="Src\Model\LevelConfigModel.cs" />
+    <Compile Include="Src\Model\LevelConfigStorage.cs" />
     <Compile Include="Src\Model\RootStorage.cs" />
+    <Compile Include="Src\Model\UserModel.cs" />
     <Compile Include="Src\Model\UserStorage.cs" />
     <Compile Include="Src\TestGame.cs">
       <Link>Src\TestGame.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\View\LeaderBoardPopup.cs" />
+    <Compile Include="Src\View\LevelPopup.cs" />
+    <Compile Include="Src\View\LoadGamePopup.cs" />
+    <Compile Include="Src\View\LoadGameItemView.cs" />
     <Compile Include="Src\View\LobbyPopup.cs" />
     <Compile Include="Src\View\PopupBase.cs" />
+    <Compile Include="Src\View\ScoreItemView.cs" />
     <Compile Include="Src\View\WelcomePopup.cs" />
     <Compile Include="Src\Windows\Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Assets\int.fnt">
-      <Link>Assets\int.fnt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Assets\int_0.pvr">
-      <Link>Assets\int_0.pvr</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="..\Assets\welcome.bip">
       <Link>Assets\welcome.bip</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Assets\leaderboard.bip">
+      <Link>Assets\leaderboard.bip</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Assets\armwrestling.bip">
+      <Link>Assets\armwrestling.bip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\Assets\lobby.bip">
@@ -195,6 +208,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
     <PackageReference Include="SharpDX.Desktop" Version="4.2.0" />

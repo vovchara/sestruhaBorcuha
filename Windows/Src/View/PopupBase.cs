@@ -25,11 +25,20 @@ namespace Scene.Src.View
 
         protected virtual void ShowPopup(string showState)
         {
-            View.PostToStateMachine(new ParamEvent<string>(showState));
+            RunState(showState, View);
         }
-        public void Dispose()
+
+        protected virtual void RunState(string state, AbstractNode node)
+        {
+            node.PostToStateMachine(new ParamEvent<string>(state));
+        }
+        public virtual void Dispose()
         {
             Debug.WriteLine($"Killing Popup Res: {_resName} Scene: {_sceneName}");
+            if ((View.Parent as ContainerNode) != null)
+            {
+                (View.Parent as ContainerNode).RemoveChild(View, Monosyne.Components.ComponentRemoveMode.Dispose);
+            }
             _packageContentManager.Dispose();
         }
     }
