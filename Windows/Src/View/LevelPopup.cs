@@ -23,10 +23,9 @@ namespace Scene.Src.View
         private readonly BitmapTextNode _timerTxt;
         private readonly BitmapTextNode _titletxt;
         private readonly ButtonNode _backBtn;
+        private readonly ControlNode _buttonContainer;
         private readonly ButtonNode _buttonZero;
         private readonly ButtonNode _buttonOne;
-        private readonly ControlNode _btnZeroStates;
-        private readonly ControlNode _btnOneStates;
         private readonly ControlNode _tooltip;
         private readonly ButtonNode _popupOkButton;
         private readonly BitmapTextNode _popupOkBtnName;
@@ -34,18 +33,19 @@ namespace Scene.Src.View
         private readonly ControlNode _armStates;
         private readonly BitmapTextNode _zeroBtnText;
         private readonly BitmapTextNode _oneBtnText;
-
-        private int _currentTimerSec; //30 //29 .. //1 //0
+        private readonly BitmapTextNode _btnTwoText;
+        private readonly BitmapTextNode _btnThreeText;
         private string _lvlId;
 
         public LevelPopup(Game game, LevelConfigModel config) : base(game, "armwrestling.bip", "sceneArmGame.object")
         {
             _timerTxt = View.FindById<BitmapTextNode>("timerTxt");
             _backBtn = View.FindById<ButtonNode>("backBtn");
+            _buttonContainer = View.FindById<ControlNode>("ButtonsContainer");
             _buttonZero = View.FindById<ButtonNode>("button_0");
             _buttonOne = View.FindById<ButtonNode>("button_1");
-            _btnZeroStates = View.FindById<ControlNode>("button_0_states");
-            _btnOneStates = View.FindById<ControlNode>("button_1_states");
+            var buttonTwo = View.FindById<ButtonNode>("button_2");
+            var buttonThree = View.FindById<ButtonNode>("button_3");
             _titletxt = View.FindById<BitmapTextNode>("titleTxt");
             _tooltip = View.FindById<ControlNode>("tooltip");
             _popupOkButton = View.FindById<ButtonNode>("okBtn");
@@ -54,10 +54,10 @@ namespace Scene.Src.View
             _armStates = View.FindById<ControlNode>("arm_states");
             _zeroBtnText = _buttonZero.FindById<BitmapTextNode>("BtnName");
             _oneBtnText = _buttonOne.FindById<BitmapTextNode>("BtnName");
+            _btnTwoText = buttonTwo.FindById<BitmapTextNode>("BtnName");
+            _btnThreeText = buttonThree.FindById<BitmapTextNode>("BtnName");
 
-            RunState("active", _btnZeroStates);
-            RunState("active", _btnOneStates);
-
+            ShowCorrectLevelState(config);
             ShowPopup("showArmGame");
 
             _lvlId = config.LevelId.ToString();
@@ -65,7 +65,25 @@ namespace Scene.Src.View
             _backBtn.Clicked += BackBtn_IsClicked;
             _buttonZero.Clicked += () => ActionButtonClicked(0);
             _buttonOne.Clicked += () => ActionButtonClicked(1);
+            buttonTwo.Clicked += () => ActionButtonClicked(2);
+            buttonThree.Clicked += () => ActionButtonClicked(3);
 
+        }
+
+        private void ShowCorrectLevelState(LevelConfigModel config)
+        {
+            if (config.LevelId < 3)
+            {
+                RunState("two_buttons", _buttonContainer);
+            }
+            else if (config.LevelId == 3)
+            {
+                RunState("three_buttons", _buttonContainer);
+            }
+            else
+            {
+                RunState("four_buttons", _buttonContainer);
+            }
         }
 
         private void BackBtn_IsClicked()
@@ -76,7 +94,6 @@ namespace Scene.Src.View
 
         public void ShowCurrentTimer(int sec)
         {
-            _currentTimerSec = sec;
             _timerTxt.TextLineRenderer.Text = sec.ToString();
         }
 
@@ -98,13 +115,30 @@ namespace Scene.Src.View
         {
             _zeroBtnText.TextLineRenderer.Text = "PRESS";
             _oneBtnText.TextLineRenderer.Text = "";
+            _btnTwoText.TextLineRenderer.Text = "";
+            _btnThreeText.TextLineRenderer.Text = "";
         }
         public void EnableButton1()
         {
-            _oneBtnText.TextLineRenderer.Text = "PRESS";
             _zeroBtnText.TextLineRenderer.Text = "";
+            _oneBtnText.TextLineRenderer.Text = "PRESS";
+            _btnTwoText.TextLineRenderer.Text = "";
+            _btnThreeText.TextLineRenderer.Text = "";
         }
-
+        public void EnableButton2()
+        {
+            _zeroBtnText.TextLineRenderer.Text = "";
+            _oneBtnText.TextLineRenderer.Text = "";
+            _btnTwoText.TextLineRenderer.Text = "PRESS";
+            _btnThreeText.TextLineRenderer.Text = "";
+        }
+        public void EnableButton3()
+        {
+            _zeroBtnText.TextLineRenderer.Text = "";
+            _oneBtnText.TextLineRenderer.Text = "";
+            _btnTwoText.TextLineRenderer.Text = "";
+            _btnThreeText.TextLineRenderer.Text = "PRESS";
+        }
         public void ProgressStates(int state)
         {
             switch(state)

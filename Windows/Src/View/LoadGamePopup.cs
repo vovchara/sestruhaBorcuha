@@ -63,7 +63,12 @@ namespace Scene.Src.View
 
         private void ShowLoadItems (int startIndex)
         {
-            if(startIndex == 0)
+            if (startIndex == _loadItems.Length)
+            {
+                _leftArrow.Hidden = true;
+                _rightArrow.Hidden = true;
+            }
+            else if (startIndex == 0)
             {
                 _leftArrow.Hidden = true;
             }

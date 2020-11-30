@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,13 +26,17 @@ namespace Scene.Src.Model
 
         private LevelConfigStorage()
         {
-            _levels = new []
+            var isLevelConfigExists = System.IO.File.Exists(ConfigConstants.LevelConfigPath);
+            if (isLevelConfigExists)
             {
-                new LevelConfigModel(1, 30, 2, 0),
-                new LevelConfigModel(2, 25, 1, 1),
-                new LevelConfigModel(3, 15, 0.8f, 2),
-                new LevelConfigModel(4, 10, 0.7f, 3)
-            };
+                var levelConfigs = System.IO.File.ReadAllText(ConfigConstants.LevelConfigPath);
+                var configsArray = JsonConvert.DeserializeObject<LevelConfigModel[]>(levelConfigs);
+                _levels = configsArray;
+            }
+            else
+            {
+                return;
+            }
         }
 
         public LevelConfigModel[] GetAllLevelConfigs()

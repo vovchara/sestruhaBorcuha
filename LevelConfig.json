@@ -6,19 +6,19 @@
     "MinScores": 0
   },
     {
-    "LevelId": "1",
+    "LevelId": "2",
     "LevelTimeSec": 20,
     "ButtonsActiveTimeSec": 1.7,
     "MinScores": 1
   },
     {
-    "LevelId": "1",
+    "LevelId": "3",
     "LevelTimeSec": 15,
     "ButtonsActiveTimeSec": 1.5,
     "MinScores": 2
   },
     {
-    "LevelId": "1",
+    "LevelId": "4",
     "LevelTimeSec": 10,
     "ButtonsActiveTimeSec": 1,
     "MinScores": 3

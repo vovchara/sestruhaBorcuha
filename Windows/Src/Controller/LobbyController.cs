@@ -34,14 +34,22 @@ namespace Scene.Controller
             _lobbyPopup.lvlBtnIsClicked += OnUserClicked_lvlBtn;
 
             var levelsConfigs = _levelConfigStorage.GetAllLevelConfigs();
-            foreach (var conf in levelsConfigs)
+            if(levelsConfigs == null)
             {
-                if(conf.MinScores <= _myUserModel.UserScore)
+                return;
+            }
+            else
+            {
+                foreach (var conf in levelsConfigs)
                 {
-                    _lobbyPopup.EnableLevel(conf.LevelId);
-                }
+                    if (conf.MinScores <= _myUserModel.UserScore)
+                    {
+                        _lobbyPopup.EnableLevel(conf.LevelId);
+                    }
+              }
             }
         }
+
         private void OnUserClicked_lvlBtn(int levelNumber)
         {
             OpenLevelPopup(levelNumber);
