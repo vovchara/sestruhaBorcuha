@@ -34,11 +34,6 @@ namespace Scene.Controller
             _lobbyPopup.lvlBtnIsClicked += OnUserClicked_lvlBtn;
 
             var levelsConfigs = _levelConfigStorage.GetAllLevelConfigs();
-            if(levelsConfigs == null)
-            {
-                return;
-            }
-            else
             {
                 foreach (var conf in levelsConfigs)
                 {

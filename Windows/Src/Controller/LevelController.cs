@@ -24,7 +24,6 @@ namespace Scene.Src.Controller
         private Timer _lvlTimer;
         private const int WinProgressId = 4;
         private const int LooseProgressId = -4;
-        private int PlayButtonAmount;
 
         public LevelController(int levelNumber)
         {
@@ -116,33 +115,24 @@ namespace Scene.Src.Controller
         private void ActivateButton()
         {
             var random = new Random();
-            PlayButtonAmount = _levelToOpen;
-            if(PlayButtonAmount == 1)
+            _correctButtonId = random.Next(_levelConfig.ButtonsAmount);
+            switch(_correctButtonId)
             {
-                PlayButtonAmount++;
+                case 0:
+                    _levelPopup.EnableButton0();
+                    break;
+                case 1:
+                    _levelPopup.EnableButton1();
+                    break;
+                case 2:
+                    _levelPopup.EnableButton2();
+                    break;
+                case 3:
+                    _levelPopup.EnableButton3();
+                    break;
             }
-            _correctButtonId = random.Next(PlayButtonAmount);
-            if (_correctButtonId == 0)
-            {
-                _levelPopup.EnableButton0();
-            }
-            else if (_correctButtonId == 1)
-            {
-                _levelPopup.EnableButton1();
-            }
-            else if (_correctButtonId == 2)
-            {
-                _levelPopup.EnableButton2();
-            }
-            else
-            {
-                _levelPopup.EnableButton3();
-            }
-
             _btnTimer.Start();
         }
-
-
 
         private void OnBtnTimerTik(object sender, ElapsedEventArgs e)
         {

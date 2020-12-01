@@ -13,7 +13,6 @@ namespace Scene.Src.View
         private readonly string _resName;
         private readonly string _sceneName;
         public AbstractNode View { get; protected set; }
-
         protected PopupBase(Game game, string resName, string sceneName)
         {
             _resName = resName;

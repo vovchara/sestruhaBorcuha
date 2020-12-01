@@ -36,7 +36,6 @@ namespace Scene.Src.View
         private readonly BitmapTextNode _btnTwoText;
         private readonly BitmapTextNode _btnThreeText;
         private string _lvlId;
-
         public LevelPopup(Game game, LevelConfigModel config) : base(game, "armwrestling.bip", "sceneArmGame.object")
         {
             _timerTxt = View.FindById<BitmapTextNode>("timerTxt");
@@ -67,16 +66,15 @@ namespace Scene.Src.View
             _buttonOne.Clicked += () => ActionButtonClicked(1);
             buttonTwo.Clicked += () => ActionButtonClicked(2);
             buttonThree.Clicked += () => ActionButtonClicked(3);
-
         }
 
         private void ShowCorrectLevelState(LevelConfigModel config)
         {
-            if (config.LevelId < 3)
+            if (config.ButtonsAmount == 2)
             {
                 RunState("two_buttons", _buttonContainer);
             }
-            else if (config.LevelId == 3)
+            else if (config.ButtonsAmount == 3)
             {
                 RunState("three_buttons", _buttonContainer);
             }
@@ -91,13 +89,12 @@ namespace Scene.Src.View
             _backBtn.Clicked -= BackBtn_IsClicked;
             BackClicked();
         }
-
         public void ShowCurrentTimer(int sec)
         {
             _timerTxt.TextLineRenderer.Text = sec.ToString();
         }
 
-    public void ShowTooltip(string text)
+         public void ShowTooltip(string text)
         {
             RunState("show", _tooltip);
             _popupOkBtnName.TextLineRenderer.Text = "OK";
@@ -113,31 +110,31 @@ namespace Scene.Src.View
 
         public void EnableButton0()
         {
+            HideTextOnAllButtons();
             _zeroBtnText.TextLineRenderer.Text = "PRESS";
-            _oneBtnText.TextLineRenderer.Text = "";
-            _btnTwoText.TextLineRenderer.Text = "";
-            _btnThreeText.TextLineRenderer.Text = "";
         }
         public void EnableButton1()
         {
-            _zeroBtnText.TextLineRenderer.Text = "";
+            HideTextOnAllButtons();
             _oneBtnText.TextLineRenderer.Text = "PRESS";
-            _btnTwoText.TextLineRenderer.Text = "";
-            _btnThreeText.TextLineRenderer.Text = "";
         }
         public void EnableButton2()
         {
-            _zeroBtnText.TextLineRenderer.Text = "";
-            _oneBtnText.TextLineRenderer.Text = "";
+            HideTextOnAllButtons();
             _btnTwoText.TextLineRenderer.Text = "PRESS";
-            _btnThreeText.TextLineRenderer.Text = "";
         }
         public void EnableButton3()
+        {
+            HideTextOnAllButtons();
+            _btnThreeText.TextLineRenderer.Text = "PRESS";
+        }
+
+        private void HideTextOnAllButtons()
         {
             _zeroBtnText.TextLineRenderer.Text = "";
             _oneBtnText.TextLineRenderer.Text = "";
             _btnTwoText.TextLineRenderer.Text = "";
-            _btnThreeText.TextLineRenderer.Text = "PRESS";
+            _btnThreeText.TextLineRenderer.Text = "";
         }
         public void ProgressStates(int state)
         {

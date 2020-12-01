@@ -36,7 +36,8 @@ namespace Scene.Src.View
             _backButton.Clicked += OnBackButtonClicked;
             _rightArrow.Clicked += NextClicked;
             _leftArrow.Clicked += PreviousClicked;
-
+            _leftArrow.Hidden = true;
+            _rightArrow.Hidden = true;
         }
 
         private void PreviousClicked()
@@ -63,12 +64,7 @@ namespace Scene.Src.View
 
         private void ShowLoadItems (int startIndex)
         {
-            if (startIndex == _loadItems.Length)
-            {
-                _leftArrow.Hidden = true;
-                _rightArrow.Hidden = true;
-            }
-            else if (startIndex == 0)
+            if (startIndex == 0)
             {
                 _leftArrow.Hidden = true;
             }
@@ -97,7 +93,6 @@ namespace Scene.Src.View
                 }
             }
         }
-
 
         private void ContinueIsClicked(UserModel user)
         {

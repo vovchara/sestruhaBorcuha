@@ -3,24 +3,28 @@
     "LevelId": "1",
     "LevelTimeSec": 25,
     "ButtonsActiveTimeSec": 2,
-    "MinScores": 0
+    "MinScores": 0,
+	"ButtonsAmount": 2,
   },
     {
     "LevelId": "2",
     "LevelTimeSec": 20,
     "ButtonsActiveTimeSec": 1.7,
-    "MinScores": 1
+    "MinScores": 1,
+	"ButtonsAmount": 2,
   },
     {
     "LevelId": "3",
     "LevelTimeSec": 15,
     "ButtonsActiveTimeSec": 1.5,
-    "MinScores": 2
+    "MinScores": 2,
+	"ButtonsAmount": 3,
   },
     {
     "LevelId": "4",
     "LevelTimeSec": 10,
     "ButtonsActiveTimeSec": 1,
-    "MinScores": 3
+    "MinScores": 3,
+	"ButtonsAmount": 4,
   }
 ]

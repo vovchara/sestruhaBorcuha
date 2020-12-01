@@ -46,7 +46,6 @@ namespace Scene.View
             _leaderBoardButton.Clicked += OnLeaderBoardButtonClicked;
             _loadGameButton.Clicked += OnLoadGameButtonClicked;
         }
-
         private void OnLoadGameButtonClicked()
         {
             UserClickedLoadGameButton();
@@ -77,6 +76,12 @@ namespace Scene.View
             }
         }
 
+        public void ExistedNameEntered()
+        {
+            _errorTxt.TextLineRenderer.Text = $"User with name {_userName} already exists!";
+            _errorTxt.TransformModel.Color = Color.Red;
+        }
+
         private void OnNewGameClicked()
         {
             _userName = _inputNameTxt.TextRenderer.Text;
@@ -90,6 +95,5 @@ namespace Scene.View
             _leaderBoardButton.Clicked -= OnLeaderBoardButtonClicked;
             _loadGameButton.Clicked -= OnLoadGameButtonClicked;
         }
-
     }
 }

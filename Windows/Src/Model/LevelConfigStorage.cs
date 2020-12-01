@@ -35,7 +35,7 @@ namespace Scene.Src.Model
             }
             else
             {
-                return;
+                _levels = new LevelConfigModel [0];
             }
         }
 

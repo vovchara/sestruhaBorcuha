@@ -25,7 +25,6 @@ namespace Scene.Src.View
 
          public LobbyPopup(Game game, string userName, long userScore ) : base(game, "lobby.bip", "sceneLobbyPopup.object")
          {
-
             _soundBtn = View.FindById<WidgetNode>("SoundContainer");
             _nameTxt = View.FindById<BitmapTextNode>("NameTxt");
             _scoresTxt = View.FindById<BitmapTextNode>("ScoresTxt");
