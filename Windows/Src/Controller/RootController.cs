@@ -4,38 +4,44 @@ using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
 
 namespace Scene.Controller
 {
-    public class RootController
+    public class RootController : IDisposable
     {
+        private readonly ControllerFactory _controllerFactory;
         private WelcomeController _welcomeController;
         private LobbyController _lobbyController;
         private LevelController _levelController;
         private LeaderBoardController _ledearBoardController;
         private LoadGameController _loadGameController;
 
-        public RootController(Game game, RenderStatesNode rootSceneNode)
+        public RootController(Game game, RootSceneContainer rootSceneContainer, ControllerFactory controllerFactory)
         {
             var rootStorage = RootStorage.getInstance();
             rootStorage.Game = game;
-            rootStorage.RootScene = rootSceneNode;
+            rootStorage.RootScene = rootSceneContainer.RootScene;
+            _controllerFactory = controllerFactory;
         }
 
         public void Start()
         {
-            var userSaves = new LoadUserSavesController();
+            var userSaves = _controllerFactory.CreateController<LoadUserSavesController>();
+            //var userSaves = new LoadUserSavesController();
             userSaves.Start();
             userSaves.Dispose();
+
             CreateWelcomeController();
         }
 
         private void CreateWelcomeController()
         {
-            _welcomeController = new WelcomeController();
+            //_welcomeController = new WelcomeController();
+            _welcomeController = _controllerFactory.CreateController<WelcomeController>();
             _welcomeController.StartNewGame += OpenLobbyHandler;
             _welcomeController.OpenLeaderBoard += OpenLeaderBoardHandler;
             _welcomeController.LoadGame += LoadGameHandler;
@@ -112,7 +118,7 @@ namespace Scene.Controller
         private void OpenWelcomePopupHandler()
         {
             DisposeLobbyIfNeeded();
-            Start();
+            CreateWelcomeController();
         }
 
         public void Dispose()
