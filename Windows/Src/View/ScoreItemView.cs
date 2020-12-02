@@ -29,6 +29,5 @@ namespace Scene.Src.View
                 View.Dispose();
             }
         }
-
     }
 }

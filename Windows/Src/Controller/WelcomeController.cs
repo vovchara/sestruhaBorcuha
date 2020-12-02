@@ -46,7 +46,7 @@ namespace Scene.Controller
             var isUserExist = _userStorage.CheckExistingUsers(userName);
             if (isUserExist)
             {
-                Debug.WriteLine($"User already exists");
+                _welcomePopup.ExistedNameEntered();
                 return;
             }
             else

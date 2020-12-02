@@ -20,7 +20,6 @@ namespace Scene.Src.Controller
             var view = _leaderBoardPopup.View;
             _rootScene.AddChild(view);
             _leaderBoardPopup.BackButtonClicked += OnBackButtonClicked;
-
         }
 
         private ScoreItemView[] GetSavedUsers()

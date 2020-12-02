@@ -33,6 +33,8 @@ namespace Scene.Src.View
             _backButton.Clicked += OnBackButtonClicked;
             _rightArrow.Clicked += NextClicked;
             _leftArrow.Clicked += PreviousClicked;
+            _leftArrow.Hidden = true;
+            _rightArrow.Hidden = true;
         }
 
         private void PreviousClicked()
@@ -59,7 +61,7 @@ namespace Scene.Src.View
 
         private void ShowScoreItems(int startIndex)
         {
-            if(startIndex == 0)
+            if (startIndex == 0)
             {
                 _leftArrow.Hidden = true;
             }
