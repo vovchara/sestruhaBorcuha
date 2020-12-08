@@ -5,6 +5,7 @@ using Monosyne.Scene.V3;
 using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.View;
 
@@ -19,9 +20,10 @@ namespace Scene.Controller
         private WelcomePopup _welcomePopup;
         private UserStorage _userStorage;
 
-        public void Start()
+        public void Start(ViewFactory viewFactory)
         {
-            _welcomePopup = new WelcomePopup(_game);
+            _welcomePopup = viewFactory.CreateView<WelcomePopup>();
+           // _welcomePopup = new WelcomePopup(_game);
             _welcomePopup.UserClickedStartGame += OnUserClickedStart;
             _welcomePopup.UserClickedLeaderBoardButton += OnUserClickedLeaderBoard;
             _welcomePopup.UserClickedLoadGameButton += OnUserClickedLoadGameButton;

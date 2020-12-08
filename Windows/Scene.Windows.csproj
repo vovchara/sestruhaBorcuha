@@ -169,6 +169,7 @@
     <Compile Include="Src\Controller\WelcomeController.cs" />
     <Compile Include="Src\Infra\ControllerFactory.cs" />
     <Compile Include="Src\Infra\RootSceneContainer.cs" />
+    <Compile Include="Src\Infra\ViewFactory.cs" />
     <Compile Include="Src\Model\LevelConfigModel.cs" />
     <Compile Include="Src\Model\LevelConfigStorage.cs" />
     <Compile Include="Src\Model\RootStorage.cs" />

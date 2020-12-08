@@ -1,5 +1,6 @@
 ﻿using Monosyne;
 using Monosyne.Scene.V3.Widgets;
+using Scene.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,37 @@ namespace Scene.Src.View
         private readonly int _scoreItemsCount;
         private List<int> _visibleItemsIds;
         private int _maxItemsInContainer;
+        private Game _game;
 
-        public LeaderBoardPopup(Game game, ScoreItemView[] scoreItemViews ) : base(game, "leaderboard.bip", "sceneBoard.object")
+        public LeaderBoardPopup(Game game) : base(game, "leaderboard.bip", "sceneBoard.object")
         {
-            _scoreItemViews = scoreItemViews;
+            _game = game;
+            _scoreItemViews = GetSavedUsers();
             _scoreItemsCount = _scoreItemViews.Length;
             _backButton = View.FindById<ButtonNode>("backBtn");
             _itemContainer = View.FindById<WidgetNode>("item_container");
             _leftArrow = View.FindById<ButtonNode>("leftBtn");
             _rightArrow = View.FindById<ButtonNode>("rightBtn");
+            _leftArrow.Hidden = true;
+            _rightArrow.Hidden = true;
             ShowScoreItems(0);
             ShowPopup("showBoardPopup");
             _backButton.Clicked += OnBackButtonClicked;
             _rightArrow.Clicked += NextClicked;
             _leftArrow.Clicked += PreviousClicked;
-            _leftArrow.Hidden = true;
-            _rightArrow.Hidden = true;
         }
 
+        private ScoreItemView[] GetSavedUsers()
+        {
+            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
+            var result = new List<ScoreItemView>();
+            for (int i = 0; i < allUsers.Length; i++)
+            {
+                var scoreItemView = new ScoreItemView(_game, allUsers[i], i + 1);
+                result.Add(scoreItemView);
+            }
+            return result.ToArray();
+        }
         private void PreviousClicked()
         {
             _rightArrow.Hidden = false;
@@ -84,7 +98,11 @@ namespace Scene.Src.View
                 {
                     _rightArrow.Hidden = true;
                 }
-                if(_maxItemsInContainer == _visibleItemsIds.Count)
+                if (i < _scoreItemsCount - 1)
+                {
+                    _rightArrow.Hidden = false;
+                }
+                if (_maxItemsInContainer == _visibleItemsIds.Count)
                 {
                     break;
                 }

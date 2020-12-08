@@ -14,6 +14,8 @@ using Monosyne.Threading;
 using Scene.Controller;
 using Scene.Src.Controller;
 using Scene.Src.Infra;
+using Scene.Src.View;
+using Scene.View;
 
 namespace Scene
 {
@@ -104,6 +106,16 @@ namespace Scene
             builder.RegisterType<ControllerFactory>();
             builder.RegisterType<LoadUserSavesController>().ExternallyOwned();
             builder.RegisterType<WelcomeController>().ExternallyOwned();
+            builder.RegisterType<LoadGameController>().ExternallyOwned();
+            builder.RegisterType<LeaderBoardController>().ExternallyOwned();
+            builder.RegisterType<LobbyController>().ExternallyOwned();
+            builder.RegisterType<LevelController>().ExternallyOwned();
+            builder.RegisterType<ViewFactory>();
+            builder.RegisterType<WelcomePopup>().ExternallyOwned();
+            builder.RegisterType<LoadGamePopup>().ExternallyOwned();
+            builder.RegisterType<LeaderBoardPopup>().ExternallyOwned();
+            builder.RegisterType<LobbyPopup>().ExternallyOwned();
+            builder.RegisterType<LevelPopup>().ExternallyOwned();
 
             Container = builder.Build();
 

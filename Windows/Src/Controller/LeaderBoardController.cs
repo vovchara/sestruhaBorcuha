@@ -1,4 +1,5 @@
 ﻿using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.View;
 using System;
 using System.Collections.Generic;
@@ -13,25 +14,14 @@ namespace Scene.Src.Controller
         public event Action CloseLeaderBoard = delegate { };
         private LeaderBoardPopup _leaderBoardPopup;
 
-        public void Start()
+        public void Start(ViewFactory viewFactory)
         {
-           var savedUsers = GetSavedUsers();
-            _leaderBoardPopup = new LeaderBoardPopup(_game, savedUsers);
+            //  var savedUsers = GetSavedUsers();
+            //  _leaderBoardPopup = new LeaderBoardPopup(_game, savedUsers);
+            _leaderBoardPopup = viewFactory.CreateView<LeaderBoardPopup>();
             var view = _leaderBoardPopup.View;
             _rootScene.AddChild(view);
             _leaderBoardPopup.BackButtonClicked += OnBackButtonClicked;
-        }
-
-        private ScoreItemView[] GetSavedUsers()
-        {
-            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
-            var result = new List<ScoreItemView>();
-            for (int i = 0; i < allUsers.Length; i++)
-            {
-                var scoreItemView = new ScoreItemView(_game, allUsers[i], i+1);
-                result.Add(scoreItemView);
-            }
-            return result.ToArray();
         }
 
         private void OnBackButtonClicked()

@@ -1,4 +1,5 @@
 ﻿using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
@@ -14,7 +15,6 @@ namespace Scene.Src.Controller
    public class LevelController : ControllerBase
     {
         public event Action OpenLobbyScreen = delegate { };
-        private readonly int _levelToOpen;
         private LevelPopup _levelPopup;
         private Timer _btnTimer;
         private LevelConfigModel _levelConfig;
@@ -25,22 +25,18 @@ namespace Scene.Src.Controller
         private const int WinProgressId = 4;
         private const int LooseProgressId = -4;
 
-        public LevelController(int levelNumber)
+        public void Start(int levelNumber, ViewFactory viewFactory)
         {
-            _levelToOpen = levelNumber;
-        }
-
-        public void Start()
-        {
-             _levelConfig = LevelConfigStorage.getInstance().GetConfig(_levelToOpen);
+             _levelConfig = LevelConfigStorage.getInstance().GetConfig(levelNumber);
             if (_levelConfig == null)
             {
-                Debug.WriteLine($"Can not popup for start level:{_levelToOpen}");
+                Debug.WriteLine($"Can not popup for start level:{levelNumber}");
                 OpenLobbyScreen();
                 return;
             }
-
-            _levelPopup = new LevelPopup(_game, _levelConfig);
+            _levelPopup = viewFactory.CreateView<LevelPopup>();
+            _levelPopup.ShowCorrectLevelState(_levelConfig);
+            //   _levelPopup = new LevelPopup(_game, _levelConfig);
             _levelPopup.BackClicked += OnBackClicked;
             _levelPopup.TimerEnd += OnTimeEnd;
             _levelPopup.ActionButtonClicked += ActionButtonIsClickedHandler;
@@ -153,9 +149,19 @@ namespace Scene.Src.Controller
 
         private void OnWin()
         {
+            var allUsersScores = UserStorage.getInstance().AllUsersSortedByScore();
+            var higestCurrentScore = allUsersScores[0].UserScore;
             UserStorage.getInstance().MyUserModel.UserScore++;
+            var myUserScore = UserStorage.getInstance().MyUserModel.UserScore;
             _lvlTimer.Stop();
-            _levelPopup.ShowTooltip("YOU WIN");
+            if (higestCurrentScore < myUserScore)
+            {
+                _levelPopup.ShowTooltip("WOW! NEW RECORD!");
+            }
+            else
+            {
+                _levelPopup.ShowTooltip("YOU WIN");
+            }
         }
 
         private void OnTimeEnd()

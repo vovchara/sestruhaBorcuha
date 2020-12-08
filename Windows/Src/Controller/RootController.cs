@@ -14,18 +14,20 @@ namespace Scene.Controller
     public class RootController : IDisposable
     {
         private readonly ControllerFactory _controllerFactory;
+        private readonly ViewFactory _viewFactory;
         private WelcomeController _welcomeController;
         private LobbyController _lobbyController;
         private LevelController _levelController;
         private LeaderBoardController _ledearBoardController;
         private LoadGameController _loadGameController;
 
-        public RootController(Game game, RootSceneContainer rootSceneContainer, ControllerFactory controllerFactory)
+        public RootController(Game game, RootSceneContainer rootSceneContainer, ControllerFactory controllerFactory, ViewFactory viewFactory)
         {
             var rootStorage = RootStorage.getInstance();
             rootStorage.Game = game;
             rootStorage.RootScene = rootSceneContainer.RootScene;
             _controllerFactory = controllerFactory;
+            _viewFactory = viewFactory;
         }
 
         public void Start()
@@ -40,19 +42,18 @@ namespace Scene.Controller
 
         private void CreateWelcomeController()
         {
-            //_welcomeController = new WelcomeController();
             _welcomeController = _controllerFactory.CreateController<WelcomeController>();
             _welcomeController.StartNewGame += OpenLobbyHandler;
             _welcomeController.OpenLeaderBoard += OpenLeaderBoardHandler;
             _welcomeController.LoadGame += LoadGameHandler;
-            _welcomeController.Start();
+            _welcomeController.Start(_viewFactory);
         }
 
         private void LoadGameHandler()
         {
             DisposeWelcomeIfNeeded();
-            _loadGameController = new LoadGameController();
-            _loadGameController.Start();
+            _loadGameController = _controllerFactory.CreateController<LoadGameController>();
+            _loadGameController.Start(_viewFactory);
             _loadGameController.CloseLoadGamePopup += CloseLoadGamePopupHandler;
             _loadGameController.ContinueGameForUser += ContinueGameForUserHandler;
         }
@@ -73,8 +74,8 @@ namespace Scene.Controller
         private void OpenLeaderBoardHandler()
         {
             DisposeWelcomeIfNeeded();
-            _ledearBoardController = new LeaderBoardController();
-            _ledearBoardController.Start();
+            _ledearBoardController = _controllerFactory.CreateController<LeaderBoardController>();
+            _ledearBoardController.Start(_viewFactory);
             _ledearBoardController.CloseLeaderBoard += CloseLeaderBoardHandler;
         }
 
@@ -88,8 +89,8 @@ namespace Scene.Controller
         {
             DisposeWelcomeIfNeeded();
             SaveUserToDisk();
-            _lobbyController = new LobbyController();
-            _lobbyController.Start();
+            _lobbyController = _controllerFactory.CreateController<LobbyController>();
+            _lobbyController.Start(_viewFactory);
             _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
             _lobbyController.OpenLevelPopup += StartLvl;
         }
@@ -104,8 +105,8 @@ namespace Scene.Controller
         private void StartLvl(int levelNumber)
         {
             DisposeLobbyIfNeeded();
-            _levelController = new LevelController(levelNumber);
-            _levelController.Start();
+            _levelController = _controllerFactory.CreateController<LevelController>();
+            _levelController.Start(levelNumber, _viewFactory);
             _levelController.OpenLobbyScreen += BackFromLevelToLobby;
         }
 

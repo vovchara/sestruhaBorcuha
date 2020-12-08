@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
@@ -24,9 +25,10 @@ namespace Scene.Controller
             _myUserModel = UserStorage.getInstance().MyUserModel;
             _levelConfigStorage = LevelConfigStorage.getInstance();
         }
-        public void Start()
+        public void Start(ViewFactory viewFactory)
         {
-            _lobbyPopup = new LobbyPopup(_game, _myUserModel.UserName, _myUserModel.UserScore);
+            _lobbyPopup = viewFactory.CreateView<LobbyPopup>();
+          //  _lobbyPopup = new LobbyPopup(_game, _myUserModel.UserName, _myUserModel.UserScore);
             var view = _lobbyPopup.View;
             _rootScene.AddChild(view);
 
