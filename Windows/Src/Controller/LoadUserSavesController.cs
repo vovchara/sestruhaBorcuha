@@ -1,16 +1,17 @@
 ﻿using Newtonsoft.Json;
 using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.Controller
 {
     public class LoadUserSavesController : ControllerBase
     {
+        public LoadUserSavesController(RootSceneContainer sceneContainer, ViewFactory viewFactory, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
+        {
+        }
         public void Start()
         {
             var hasSavedUsers = System.IO.File.Exists(ConfigConstants.UserSavePath);
@@ -19,17 +20,17 @@ namespace Scene.Src.Controller
                 var savedUsersText = System.IO.File.ReadAllText(ConfigConstants.UserSavePath);
                 if (savedUsersText == "")
                 {
-                    UserStorage.getInstance().AllUsers = new List<UserModel>();
+                    _userStorage.AllUsers = new List<UserModel>();
                 }
                 else
                 {
                     var arrayOfUsers = JsonConvert.DeserializeObject<UserModel[]>(savedUsersText);
-                    UserStorage.getInstance().AllUsers = arrayOfUsers.ToList();
+                    _userStorage.AllUsers = arrayOfUsers.ToList();
                 }
             }
             else
             {
-                UserStorage.getInstance().AllUsers = new List<UserModel>();
+                _userStorage.AllUsers = new List<UserModel>();
             }
         }
 

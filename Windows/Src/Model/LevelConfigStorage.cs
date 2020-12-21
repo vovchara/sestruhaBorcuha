@@ -1,30 +1,13 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.Model
 {
     public class LevelConfigStorage
     {
-        private static LevelConfigStorage instance;
- 
-        public static LevelConfigStorage getInstance()
-        {
-            if (instance == null)
-            {
-                instance = new LevelConfigStorage();
-            }
-
-            return instance;
-        }
-
         private readonly LevelConfigModel[] _levels;
 
-        private LevelConfigStorage()
+        public LevelConfigStorage()
         {
             var isLevelConfigExists = System.IO.File.Exists(ConfigConstants.LevelConfigPath);
             if (isLevelConfigExists)

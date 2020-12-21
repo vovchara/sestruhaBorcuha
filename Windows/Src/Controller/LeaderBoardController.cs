@@ -1,10 +1,7 @@
 ﻿using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.Controller
 {
@@ -13,25 +10,16 @@ namespace Scene.Src.Controller
         public event Action CloseLeaderBoard = delegate { };
         private LeaderBoardPopup _leaderBoardPopup;
 
+        public LeaderBoardController(ViewFactory viewFactory, RootSceneContainer sceneContainer, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
+        {
+        }
+
         public void Start()
         {
-           var savedUsers = GetSavedUsers();
-            _leaderBoardPopup = new LeaderBoardPopup(_game, savedUsers);
+            _leaderBoardPopup = _viewFactory.CreateView<LeaderBoardPopup>();
             var view = _leaderBoardPopup.View;
             _rootScene.AddChild(view);
             _leaderBoardPopup.BackButtonClicked += OnBackButtonClicked;
-        }
-
-        private ScoreItemView[] GetSavedUsers()
-        {
-            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
-            var result = new List<ScoreItemView>();
-            for (int i = 0; i < allUsers.Length; i++)
-            {
-                var scoreItemView = new ScoreItemView(_game, allUsers[i], i+1);
-                result.Add(scoreItemView);
-            }
-            return result.ToArray();
         }
 
         private void OnBackButtonClicked()

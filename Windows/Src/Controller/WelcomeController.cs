@@ -1,10 +1,7 @@
 using System;
-using System.Diagnostics;
-using Monosyne;
-using Monosyne.Scene.V3;
-using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.View;
 
@@ -17,11 +14,14 @@ namespace Scene.Controller
         public event Action LoadGame = delegate { };
 
         private WelcomePopup _welcomePopup;
-        private UserStorage _userStorage;
+
+        public WelcomeController(ViewFactory viewFactory, RootSceneContainer sceneContainer, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
+        {
+        }
 
         public void Start()
         {
-            _welcomePopup = new WelcomePopup(_game);
+            _welcomePopup = _viewFactory.CreateView<WelcomePopup>();
             _welcomePopup.UserClickedStartGame += OnUserClickedStart;
             _welcomePopup.UserClickedLeaderBoardButton += OnUserClickedLeaderBoard;
             _welcomePopup.UserClickedLoadGameButton += OnUserClickedLoadGameButton;
@@ -42,7 +42,6 @@ namespace Scene.Controller
 
         public void OnUserClickedStart(string userName)
         {
-            _userStorage = UserStorage.getInstance();
             var isUserExist = _userStorage.CheckExistingUsers(userName);
             if (isUserExist)
             {

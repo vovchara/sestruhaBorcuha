@@ -1,3 +1,4 @@
+using Autofac;
 using Monosyne;
 using Monosyne.Components;
 using Monosyne.Content;
@@ -11,6 +12,7 @@ using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
 using Monosyne.Threading;
 using Scene.Controller;
+using Scene.Src.Infra;
 
 namespace Scene
 {
@@ -18,17 +20,21 @@ namespace Scene
 	{
 	    public readonly RectangleF CoordinateSystem = new RectangleF(0, 0, 1152, 768);
 
+        private static IContainer Container { get; set; }
+
 	    private readonly RenderStatesNode _rootNode;
         private readonly GesturesTranslator _touchTranslator;
         private RasterizerContext _rasterContext;
         private RootController _rootController;
+
+        private ILifetimeScope lifetimeScope;
 
 	    private readonly EventPropagator _eventPropagator;
 
         public TestGame(IPlatform platform)
 			: base(platform)
         {
-		    PackageTypeReaderManager.DefaultManager.AddReader(new PackageSceneV2Reader());
+            PackageTypeReaderManager.DefaultManager.AddReader(new PackageSceneV2Reader());
 
             WidgetNode.DefaultHoverPointerType = PointerType.Arrow;
 
@@ -88,8 +94,26 @@ namespace Scene
 	        
             _rootNode.Initialize();
             AddComponent(_rootNode);
-            
-            _rootController = new RootController(this, _rootNode);
+
+            var builder = new ContainerBuilder();
+            builder.RegisterType<RootController>();
+            builder.RegisterInstance(this).As<Game>();
+            var rootSceneContainer = new RootSceneContainer(_rootNode);
+            builder.RegisterInstance(rootSceneContainer).As<RootSceneContainer>();
+
+            var mainBootsrapper = new MainBootstrapper();
+            mainBootsrapper.RegisterAll(builder);
+
+            Container = builder.Build();
+
+            lifetimeScope = Container.BeginLifetimeScope();
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterInstance(lifetimeScope).As<ILifetimeScope>();
+            containerBuilder.Update(Container);
+
+            _rootController = lifetimeScope.Resolve<RootController>();
+
+            //_rootController = new RootController(this, _rootNode);
             _rootController.Start();
         }
 
@@ -111,8 +135,8 @@ namespace Scene
 	        base.Dispose(disposing);
 	        if (disposing)
 	        {
+                lifetimeScope?.Dispose();
                 _touchTranslator.Dispose();
-                _rootController?.Dispose();
 	        }
 	    }
 	}

@@ -1,9 +1,6 @@
-using Monosyne;
-using Monosyne.Scene.V3;
-using Newtonsoft.Json;
 using Scene.Model;
-using Scene.Src;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
@@ -19,14 +16,14 @@ namespace Scene.Controller
         private readonly UserModel _myUserModel;
         private readonly LevelConfigStorage _levelConfigStorage;
 
-        public LobbyController()
+        public LobbyController(ViewFactory viewFactory, RootSceneContainer sceneContainer, LevelConfigStorage levelConfigStorage, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
         {
-            _myUserModel = UserStorage.getInstance().MyUserModel;
-            _levelConfigStorage = LevelConfigStorage.getInstance();
+            _myUserModel = userStorage.MyUserModel;
+            _levelConfigStorage = levelConfigStorage;
         }
         public void Start()
         {
-            _lobbyPopup = new LobbyPopup(_game, _myUserModel.UserName, _myUserModel.UserScore);
+            _lobbyPopup = _viewFactory.CreateView<LobbyPopup>();
             var view = _lobbyPopup.View;
             _rootScene.AddChild(view);
 

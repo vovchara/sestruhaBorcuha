@@ -1,33 +1,32 @@
-using Monosyne;
-using Monosyne.Scene.V3;
 using Newtonsoft.Json;
 using Scene.Model;
 using Scene.Src;
 using Scene.Src.Controller;
+using Scene.Src.Infra;
 using Scene.Src.Model;
-using Scene.Src.View;
 using System;
 
 namespace Scene.Controller
 {
-    public class RootController
+    public class RootController : IDisposable
     {
+        private readonly ControllerFactory _controllerFactory;
+        private readonly UserStorage _userStorage;
         private WelcomeController _welcomeController;
         private LobbyController _lobbyController;
         private LevelController _levelController;
         private LeaderBoardController _ledearBoardController;
         private LoadGameController _loadGameController;
 
-        public RootController(Game game, RenderStatesNode rootSceneNode)
+        public RootController(ControllerFactory controllerFactory, UserStorage userStorage)
         {
-            var rootStorage = RootStorage.getInstance();
-            rootStorage.Game = game;
-            rootStorage.RootScene = rootSceneNode;
+            _controllerFactory = controllerFactory;
+            _userStorage = userStorage;
         }
 
         public void Start()
         {
-            var userSaves = new LoadUserSavesController();
+            var userSaves = _controllerFactory.CreateController<LoadUserSavesController>();
             userSaves.Start();
             userSaves.Dispose();
             CreateWelcomeController();
@@ -35,7 +34,7 @@ namespace Scene.Controller
 
         private void CreateWelcomeController()
         {
-            _welcomeController = new WelcomeController();
+            _welcomeController = _controllerFactory.CreateController<WelcomeController>();
             _welcomeController.StartNewGame += OpenLobbyHandler;
             _welcomeController.OpenLeaderBoard += OpenLeaderBoardHandler;
             _welcomeController.LoadGame += LoadGameHandler;
@@ -45,7 +44,7 @@ namespace Scene.Controller
         private void LoadGameHandler()
         {
             DisposeWelcomeIfNeeded();
-            _loadGameController = new LoadGameController();
+            _loadGameController = _controllerFactory.CreateController<LoadGameController>();
             _loadGameController.Start();
             _loadGameController.CloseLoadGamePopup += CloseLoadGamePopupHandler;
             _loadGameController.ContinueGameForUser += ContinueGameForUserHandler;
@@ -54,7 +53,7 @@ namespace Scene.Controller
         private void ContinueGameForUserHandler(UserModel userSave)
         {
             DisposeLoadGameControllerIfNeeded();
-            UserStorage.getInstance().MyUserModel = userSave;
+            _userStorage.MyUserModel = userSave;
             OpenLobbyHandler();
         }
 
@@ -67,7 +66,7 @@ namespace Scene.Controller
         private void OpenLeaderBoardHandler()
         {
             DisposeWelcomeIfNeeded();
-            _ledearBoardController = new LeaderBoardController();
+            _ledearBoardController = _controllerFactory.CreateController<LeaderBoardController>();
             _ledearBoardController.Start();
             _ledearBoardController.CloseLeaderBoard += CloseLeaderBoardHandler;
         }
@@ -82,7 +81,7 @@ namespace Scene.Controller
         {
             DisposeWelcomeIfNeeded();
             SaveUserToDisk();
-            _lobbyController = new LobbyController();
+            _lobbyController = _controllerFactory.CreateController<LobbyController>();
             _lobbyController.Start();
             _lobbyController.OpenWelcomePopup += OpenWelcomePopupHandler;
             _lobbyController.OpenLevelPopup += StartLvl;
@@ -90,7 +89,7 @@ namespace Scene.Controller
 
         private void SaveUserToDisk()
         {
-            var allUsers = UserStorage.getInstance().AllUsers;
+            var allUsers = _userStorage.AllUsers;
             var allUsersJson = JsonConvert.SerializeObject(allUsers, Formatting.Indented);
             System.IO.File.WriteAllText(ConfigConstants.UserSavePath, allUsersJson);
         }
@@ -98,8 +97,8 @@ namespace Scene.Controller
         private void StartLvl(int levelNumber)
         {
             DisposeLobbyIfNeeded();
-            _levelController = new LevelController(levelNumber);
-            _levelController.Start();
+            _levelController = _controllerFactory.CreateController<LevelController>();
+            _levelController.Start(levelNumber);
             _levelController.OpenLobbyScreen += BackFromLevelToLobby;
         }
 
@@ -112,7 +111,7 @@ namespace Scene.Controller
         private void OpenWelcomePopupHandler()
         {
             DisposeLobbyIfNeeded();
-            Start();
+            CreateWelcomeController();
         }
 
         public void Dispose()

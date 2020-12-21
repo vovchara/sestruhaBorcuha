@@ -3,10 +3,6 @@ using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
 using Scene.Src.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.View
 {
@@ -14,21 +10,27 @@ namespace Scene.Src.View
     {
         private UserModel _user;
         private ButtonNode _loadButton;
+        private BitmapTextNode _userName;
+        private BitmapTextNode _userScore;
 
         public event Action <UserModel> OpenSavedGame = delegate { };
 
-        public LoadGameItemView(Game game, UserModel user) : base(game, "leaderboard.bip", "sceneSavedGameItem.object")
+        public LoadGameItemView(Game game) : base(game, "leaderboard.bip", "sceneSavedGameItem.object")
         {
-            var userScore = View.FindById<BitmapTextNode>("userScoreTxt");
-            var userName = View.FindById<BitmapTextNode>("userNameTxt");
+            _userScore = View.FindById<BitmapTextNode>("userScoreTxt");
+            _userName = View.FindById<BitmapTextNode>("userNameTxt");
             _loadButton = View.FindById<ButtonNode>("loadGameBtn");
             var loadbtnTxt = View.FindById<BitmapTextNode>("BtnName");
 
-            _user = user;
-            userName.TextLineRenderer.Text = user.UserName;
-            userScore.TextLineRenderer.Text = user.UserScore.ToString();
             loadbtnTxt.TextLineRenderer.Text = "CONTINUE";
             _loadButton.Clicked += OnUserClickedLoadButton;
+        }
+
+        public void SetData(UserModel user)
+        {
+            _user = user;
+            _userName.TextLineRenderer.Text = user.UserName;
+            _userScore.TextLineRenderer.Text = user.UserScore.ToString();
         }
 
         private void OnUserClickedLoadButton()

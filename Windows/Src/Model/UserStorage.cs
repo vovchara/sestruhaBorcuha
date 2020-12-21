@@ -7,21 +7,6 @@ namespace Scene.Model
 {
     public class UserStorage
     {
-        private static UserStorage instance;
- 
-        private UserStorage()
-        {}
- 
-        public static UserStorage getInstance()
-        {
-            if (instance == null)
-            {
-                instance = new UserStorage();
-            }
-
-            return instance;
-        }
-
         public List<UserModel> AllUsers { get; set; }
         public UserModel MyUserModel { get; set; }
 

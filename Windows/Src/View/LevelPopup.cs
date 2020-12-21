@@ -3,13 +3,6 @@ using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
 using Scene.Src.Model;
 using System;
-using System.Timers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Monosyne.Events;
 
 namespace Scene.Src.View
 {
@@ -36,7 +29,7 @@ namespace Scene.Src.View
         private readonly BitmapTextNode _btnTwoText;
         private readonly BitmapTextNode _btnThreeText;
         private string _lvlId;
-        public LevelPopup(Game game, LevelConfigModel config) : base(game, "armwrestling.bip", "sceneArmGame.object")
+        public LevelPopup(Game game) : base(game, "armwrestling.bip", "sceneArmGame.object")
         {
             _timerTxt = View.FindById<BitmapTextNode>("timerTxt");
             _backBtn = View.FindById<ButtonNode>("backBtn");
@@ -56,10 +49,9 @@ namespace Scene.Src.View
             _btnTwoText = buttonTwo.FindById<BitmapTextNode>("BtnName");
             _btnThreeText = buttonThree.FindById<BitmapTextNode>("BtnName");
 
-            ShowCorrectLevelState(config);
             ShowPopup("showArmGame");
 
-            _lvlId = config.LevelId.ToString();
+
             _titletxt.TextLineRenderer.Text = $"Level {_lvlId}";
             _backBtn.Clicked += BackBtn_IsClicked;
             _buttonZero.Clicked += () => ActionButtonClicked(0);
@@ -68,8 +60,9 @@ namespace Scene.Src.View
             buttonThree.Clicked += () => ActionButtonClicked(3);
         }
 
-        private void ShowCorrectLevelState(LevelConfigModel config)
+        public void ShowCorrectLevelState(LevelConfigModel config)
         {
+            _lvlId = config.LevelId.ToString();
             if (config.ButtonsAmount == 2)
             {
                 RunState("two_buttons", _buttonContainer);

@@ -1,11 +1,11 @@
 ﻿using Monosyne;
 using Monosyne.Scene.V3.Widgets;
+using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.View
 {
@@ -14,6 +14,7 @@ namespace Scene.Src.View
         public event Action BackBtnIsClicked = delegate { };
         public event Action <UserModel> LoadGameForUser = delegate { };
 
+        private Game _game;
         private LoadGameItemView[] _loadItems;
         private int _loadItemsCount;
         private ButtonNode _backButton;
@@ -22,22 +23,40 @@ namespace Scene.Src.View
         private ButtonNode _rightArrow;
         private List<int> _visibleItemsIds;
         private int _maxItemsInContainer;
+        private readonly ViewFactory _viewFactory;
+        private readonly UserStorage _userStorage;
 
-        public LoadGamePopup(Game game, LoadGameItemView [] loadGameItems) : base(game, "leaderboard.bip", "sceneBoard.object")
+        public LoadGamePopup(Game game, ViewFactory viewFactory, UserStorage userStorage) : base(game, "leaderboard.bip", "sceneBoard.object")
         {
-            _loadItems = loadGameItems;
+            _userStorage = userStorage;
+            _viewFactory = viewFactory;
+            _game = game;
+            _loadItems = GetSavedUsers();
             _loadItemsCount = _loadItems.Length;
             _backButton = View.FindById<ButtonNode>("backBtn");
             _itemContainer = View.FindById<WidgetNode>("item_container");
             _leftArrow = View.FindById<ButtonNode>("leftBtn");
             _rightArrow = View.FindById<ButtonNode>("rightBtn");
+            _leftArrow.Hidden = true;
+            _rightArrow.Hidden = true;
             ShowLoadItems(0);
             ShowPopup("showBoardPopup");
             _backButton.Clicked += OnBackButtonClicked;
             _rightArrow.Clicked += NextClicked;
             _leftArrow.Clicked += PreviousClicked;
-            _leftArrow.Hidden = true;
-            _rightArrow.Hidden = true;
+        }
+
+        public LoadGameItemView[] GetSavedUsers()
+        {
+            var allUsers = _userStorage.AllUsersSortedByScore();
+            var result = new List<LoadGameItemView>();
+            for (int i = 0; i < allUsers.Length; i++)
+            {
+                var loadItemView = _viewFactory.CreateView<LoadGameItemView>();
+                loadItemView.SetData(allUsers[i]);
+                result.Add(loadItemView);
+            }
+            return result.ToArray();
         }
 
         private void PreviousClicked()
@@ -87,7 +106,11 @@ namespace Scene.Src.View
                 {
                     _rightArrow.Hidden = true;
                 }
-                if(_maxItemsInContainer == _visibleItemsIds.Count)
+                if (i < _loadItemsCount - 1)
+                {
+                    _rightArrow.Hidden = false;
+                }
+                if (_maxItemsInContainer == _visibleItemsIds.Count)
                 {
                     break;
                 }
