@@ -1,12 +1,11 @@
 ﻿using Monosyne;
 using Monosyne.Scene.V3.Widgets;
 using Scene.Model;
+using Scene.Src.Infra;
 using Scene.Src.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.View
 {
@@ -24,9 +23,13 @@ namespace Scene.Src.View
         private ButtonNode _rightArrow;
         private List<int> _visibleItemsIds;
         private int _maxItemsInContainer;
+        private readonly ViewFactory _viewFactory;
+        private readonly UserStorage _userStorage;
 
-        public LoadGamePopup(Game game) : base(game, "leaderboard.bip", "sceneBoard.object")
+        public LoadGamePopup(Game game, ViewFactory viewFactory, UserStorage userStorage) : base(game, "leaderboard.bip", "sceneBoard.object")
         {
+            _userStorage = userStorage;
+            _viewFactory = viewFactory;
             _game = game;
             _loadItems = GetSavedUsers();
             _loadItemsCount = _loadItems.Length;
@@ -45,11 +48,12 @@ namespace Scene.Src.View
 
         public LoadGameItemView[] GetSavedUsers()
         {
-            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
+            var allUsers = _userStorage.AllUsersSortedByScore();
             var result = new List<LoadGameItemView>();
             for (int i = 0; i < allUsers.Length; i++)
             {
-                var loadItemView = new LoadGameItemView(_game, allUsers[i]);
+                var loadItemView = _viewFactory.CreateView<LoadGameItemView>();
+                loadItemView.SetData(allUsers[i]);
                 result.Add(loadItemView);
             }
             return result.ToArray();

@@ -24,7 +24,7 @@ namespace Scene.Src.View
         private readonly ButtonNode _lvlSevenBtn;
         private readonly ButtonNode _lvlEightBtn;
 
-         public LobbyPopup(Game game) : base(game, "lobby.bip", "sceneLobbyPopup.object")
+         public LobbyPopup(Game game, UserStorage userStorage) : base(game, "lobby.bip", "sceneLobbyPopup.object")
          {
             _soundBtn = View.FindById<WidgetNode>("SoundContainer");
             _nameTxt = View.FindById<BitmapTextNode>("NameTxt");
@@ -50,8 +50,8 @@ namespace Scene.Src.View
             _lvlSevenBtn.Hidden = true;
             _lvlEightBtn.Hidden = true;
 
-            _nameTxt.TextLineRenderer.Text = UserStorage.getInstance().MyUserModel.UserName;
-            _scoresTxt.TextLineRenderer.Text = UserStorage.getInstance().MyUserModel.UserScore.ToString();
+            _nameTxt.TextLineRenderer.Text = userStorage.MyUserModel.UserName;
+            _scoresTxt.TextLineRenderer.Text = userStorage.MyUserModel.UserScore.ToString();
             _backBtn.Clicked += () => backBtnClicked();
             _lvlOneBtn.Clicked += () => lvlBtnIsClicked(1);
             _lvlTwoBtn.Clicked += () => lvlBtnIsClicked(2);

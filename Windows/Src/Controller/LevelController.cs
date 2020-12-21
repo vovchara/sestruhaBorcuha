@@ -3,11 +3,7 @@ using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Scene.Src.Controller
@@ -15,6 +11,8 @@ namespace Scene.Src.Controller
    public class LevelController : ControllerBase
     {
         public event Action OpenLobbyScreen = delegate { };
+
+        private readonly LevelConfigStorage _levelConfigStorage;
         private LevelPopup _levelPopup;
         private Timer _btnTimer;
         private LevelConfigModel _levelConfig;
@@ -25,18 +23,22 @@ namespace Scene.Src.Controller
         private const int WinProgressId = 4;
         private const int LooseProgressId = -4;
 
-        public void Start(int levelNumber, ViewFactory viewFactory)
+        public LevelController(ViewFactory viewFactory, RootSceneContainer sceneContainer, LevelConfigStorage levelConfigStorage, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
         {
-             _levelConfig = LevelConfigStorage.getInstance().GetConfig(levelNumber);
+            _levelConfigStorage = levelConfigStorage;
+        }
+
+        public void Start(int levelNumber)
+        {
+             _levelConfig = _levelConfigStorage.GetConfig(levelNumber);
             if (_levelConfig == null)
             {
                 Debug.WriteLine($"Can not popup for start level:{levelNumber}");
                 OpenLobbyScreen();
                 return;
             }
-            _levelPopup = viewFactory.CreateView<LevelPopup>();
+            _levelPopup = _viewFactory.CreateView<LevelPopup>();
             _levelPopup.ShowCorrectLevelState(_levelConfig);
-            //   _levelPopup = new LevelPopup(_game, _levelConfig);
             _levelPopup.BackClicked += OnBackClicked;
             _levelPopup.TimerEnd += OnTimeEnd;
             _levelPopup.ActionButtonClicked += ActionButtonIsClickedHandler;
@@ -138,7 +140,7 @@ namespace Scene.Src.Controller
 
         private void OnLoose()
         {
-            var userData = UserStorage.getInstance().MyUserModel;
+            var userData = _userStorage.MyUserModel;
             if (userData.UserScore > 0)
             {
                 userData.UserScore--;
@@ -149,10 +151,10 @@ namespace Scene.Src.Controller
 
         private void OnWin()
         {
-            var allUsersScores = UserStorage.getInstance().AllUsersSortedByScore();
+            var allUsersScores = _userStorage.AllUsersSortedByScore();
             var higestCurrentScore = allUsersScores[0].UserScore;
-            UserStorage.getInstance().MyUserModel.UserScore++;
-            var myUserScore = UserStorage.getInstance().MyUserModel.UserScore;
+            _userStorage.MyUserModel.UserScore++;
+            var myUserScore = _userStorage.MyUserModel.UserScore;
             _lvlTimer.Stop();
             if (higestCurrentScore < myUserScore)
             {

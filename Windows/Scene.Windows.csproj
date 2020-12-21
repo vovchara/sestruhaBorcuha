@@ -168,11 +168,11 @@
     <Compile Include="Src\Controller\RootController.cs" />
     <Compile Include="Src\Controller\WelcomeController.cs" />
     <Compile Include="Src\Infra\ControllerFactory.cs" />
+    <Compile Include="Src\Infra\MainBootstrapper.cs" />
     <Compile Include="Src\Infra\RootSceneContainer.cs" />
     <Compile Include="Src\Infra\ViewFactory.cs" />
     <Compile Include="Src\Model\LevelConfigModel.cs" />
     <Compile Include="Src\Model\LevelConfigStorage.cs" />
-    <Compile Include="Src\Model\RootStorage.cs" />
     <Compile Include="Src\Model\UserModel.cs" />
     <Compile Include="Src\Model\UserStorage.cs" />
     <Compile Include="Src\TestGame.cs" />

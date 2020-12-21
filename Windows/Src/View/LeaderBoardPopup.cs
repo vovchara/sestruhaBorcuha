@@ -1,11 +1,10 @@
 ﻿using Monosyne;
 using Monosyne.Scene.V3.Widgets;
 using Scene.Model;
+using Scene.Src.Infra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.View
 {
@@ -18,12 +17,16 @@ namespace Scene.Src.View
         private ButtonNode _rightArrow;
         private readonly ScoreItemView[] _scoreItemViews;
         private readonly int _scoreItemsCount;
+        private readonly UserStorage _userStorage;
         private List<int> _visibleItemsIds;
         private int _maxItemsInContainer;
         private Game _game;
+        private ViewFactory _viewFactory;
 
-        public LeaderBoardPopup(Game game) : base(game, "leaderboard.bip", "sceneBoard.object")
+        public LeaderBoardPopup(Game game, ViewFactory viewFacory, UserStorage userStorage) : base(game, "leaderboard.bip", "sceneBoard.object")
         {
+            _userStorage = userStorage;
+            _viewFactory = viewFacory;
             _game = game;
             _scoreItemViews = GetSavedUsers();
             _scoreItemsCount = _scoreItemViews.Length;
@@ -42,11 +45,12 @@ namespace Scene.Src.View
 
         private ScoreItemView[] GetSavedUsers()
         {
-            var allUsers = UserStorage.getInstance().AllUsersSortedByScore();
+            var allUsers = _userStorage.AllUsersSortedByScore();
             var result = new List<ScoreItemView>();
             for (int i = 0; i < allUsers.Length; i++)
             {
-                var scoreItemView = new ScoreItemView(_game, allUsers[i], i + 1);
+                var scoreItemView = _viewFactory.CreateView<ScoreItemView>();
+                scoreItemView.SetData(allUsers[i], i + 1);
                 result.Add(scoreItemView);
             }
             return result.ToArray();

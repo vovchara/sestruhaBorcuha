@@ -3,13 +3,6 @@ using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
 using Scene.Src.Model;
 using System;
-using System.Timers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Monosyne.Events;
 
 namespace Scene.Src.View
 {

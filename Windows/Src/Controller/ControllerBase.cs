@@ -1,24 +1,20 @@
-﻿using Monosyne;
-using Monosyne.Scene.V3;
+﻿using Monosyne.Scene.V3;
 using Scene.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Scene.Src.Infra;
 
 namespace Scene.Src.Controller
 {
   public class ControllerBase
     {
-        protected readonly Game _game;
         protected readonly RenderStatesNode _rootScene;
+        protected readonly ViewFactory _viewFactory;
+        protected readonly UserStorage _userStorage;
 
-        protected ControllerBase()
+        protected ControllerBase(RootSceneContainer sceneContainer, ViewFactory viewFactory, UserStorage userStorage)
         {
-            var rootStorage = RootStorage.getInstance();
-            _game = rootStorage.Game;
-            _rootScene = rootStorage.RootScene;
+            _rootScene = sceneContainer.RootScene;
+            _viewFactory = viewFactory;
+            _userStorage = userStorage;
         }
     }
 }

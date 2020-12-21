@@ -1,25 +1,25 @@
 ﻿using Monosyne;
 using Monosyne.Scene.V3;
 using Scene.Src.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Scene.Src.View
 {
     public class ScoreItemView : PopupBase
     {
-        public ScoreItemView(Game game, UserModel user, int position) : base(game, "leaderboard.bip", "sceneScoreBoardItem.object")
+        private readonly BitmapTextNode _userScore;
+        private readonly BitmapTextNode _userName;
+        private readonly BitmapTextNode _userPlace;
+        public ScoreItemView(Game game) : base(game, "leaderboard.bip", "sceneScoreBoardItem.object")
         {
-            var userScore = View.FindById<BitmapTextNode>("userScoreTxt");
-            var userName = View.FindById<BitmapTextNode>("userNameTxt");
-            var userPlace = View.FindById<BitmapTextNode>("userPlaceTxt");
+            _userScore = View.FindById<BitmapTextNode>("userScoreTxt");
+            _userName = View.FindById<BitmapTextNode>("userNameTxt");
+            _userPlace = View.FindById<BitmapTextNode>("userPlaceTxt");
+        }
 
-            userName.TextLineRenderer.Text = user.UserName;
-            userScore.TextLineRenderer.Text = user.UserScore.ToString();
-            userPlace.TextLineRenderer.Text = position.ToString();
+        public void SetData(UserModel user, int position)
+        {
+            _userName.TextLineRenderer.Text = user.UserName;
+            _userScore.TextLineRenderer.Text = user.UserScore.ToString();
+            _userPlace.TextLineRenderer.Text = position.ToString();
         }
         public override void Dispose()
         {

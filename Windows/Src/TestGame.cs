@@ -12,10 +12,7 @@ using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
 using Monosyne.Threading;
 using Scene.Controller;
-using Scene.Src.Controller;
 using Scene.Src.Infra;
-using Scene.Src.View;
-using Scene.View;
 
 namespace Scene
 {
@@ -103,19 +100,9 @@ namespace Scene
             builder.RegisterInstance(this).As<Game>();
             var rootSceneContainer = new RootSceneContainer(_rootNode);
             builder.RegisterInstance(rootSceneContainer).As<RootSceneContainer>();
-            builder.RegisterType<ControllerFactory>();
-            builder.RegisterType<LoadUserSavesController>().ExternallyOwned();
-            builder.RegisterType<WelcomeController>().ExternallyOwned();
-            builder.RegisterType<LoadGameController>().ExternallyOwned();
-            builder.RegisterType<LeaderBoardController>().ExternallyOwned();
-            builder.RegisterType<LobbyController>().ExternallyOwned();
-            builder.RegisterType<LevelController>().ExternallyOwned();
-            builder.RegisterType<ViewFactory>();
-            builder.RegisterType<WelcomePopup>().ExternallyOwned();
-            builder.RegisterType<LoadGamePopup>().ExternallyOwned();
-            builder.RegisterType<LeaderBoardPopup>().ExternallyOwned();
-            builder.RegisterType<LobbyPopup>().ExternallyOwned();
-            builder.RegisterType<LevelPopup>().ExternallyOwned();
+
+            var mainBootsrapper = new MainBootstrapper();
+            mainBootsrapper.RegisterAll(builder);
 
             Container = builder.Build();
 

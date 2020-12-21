@@ -2,10 +2,6 @@
 using Scene.Src.Infra;
 using Scene.Src.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.Controller
 {
@@ -14,11 +10,13 @@ namespace Scene.Src.Controller
         public event Action CloseLeaderBoard = delegate { };
         private LeaderBoardPopup _leaderBoardPopup;
 
-        public void Start(ViewFactory viewFactory)
+        public LeaderBoardController(ViewFactory viewFactory, RootSceneContainer sceneContainer, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
         {
-            //  var savedUsers = GetSavedUsers();
-            //  _leaderBoardPopup = new LeaderBoardPopup(_game, savedUsers);
-            _leaderBoardPopup = viewFactory.CreateView<LeaderBoardPopup>();
+        }
+
+        public void Start()
+        {
+            _leaderBoardPopup = _viewFactory.CreateView<LeaderBoardPopup>();
             var view = _leaderBoardPopup.View;
             _rootScene.AddChild(view);
             _leaderBoardPopup.BackButtonClicked += OnBackButtonClicked;

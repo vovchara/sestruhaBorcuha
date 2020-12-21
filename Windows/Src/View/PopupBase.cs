@@ -3,7 +3,6 @@ using Monosyne.Content;
 using Monosyne.Events;
 using Monosyne.Scene.V3;
 using Monosyne.Utils;
-using Scene.Src.Infra;
 using System.Diagnostics;
 
 namespace Scene.Src.View

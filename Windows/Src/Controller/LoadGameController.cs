@@ -3,10 +3,6 @@ using Scene.Src.Infra;
 using Scene.Src.Model;
 using Scene.Src.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scene.Src.Controller
 {
@@ -16,11 +12,13 @@ namespace Scene.Src.Controller
         public event Action<UserModel> ContinueGameForUser = delegate { };
         private LoadGamePopup _loadGamePopup;
 
-        public void Start(ViewFactory viewFactory)
+        public LoadGameController(ViewFactory viewFactory, RootSceneContainer sceneContainer, UserStorage userStorage) : base(sceneContainer, viewFactory, userStorage)
         {
-            _loadGamePopup = viewFactory.CreateView<LoadGamePopup>();
-         //   var savedUsers = GetSavedUsers();
-          //  _loadGamePopup = new LoadGamePopup(_game, savedUsers);
+        }
+
+        public void Start()
+        {
+            _loadGamePopup = _viewFactory.CreateView<LoadGamePopup>();
             _loadGamePopup.BackBtnIsClicked += OnBackBtnIsClicked;
             _loadGamePopup.LoadGameForUser += OnContinueBtnIsClicked;
             var view = _loadGamePopup.View;

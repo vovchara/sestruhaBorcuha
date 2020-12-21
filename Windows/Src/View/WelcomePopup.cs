@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Monosyne;
 using Monosyne.Scene.V3;
 using Monosyne.Scene.V3.Widgets;
